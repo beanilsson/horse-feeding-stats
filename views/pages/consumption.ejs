@@ -16,7 +16,7 @@
       <% if(consumptions.length > 0) {%>
       <ul>
         <% consumptions.forEach(function(c) { %>
-        <li>Datum: <%= c.datum %><br />Fodertyp: <%= c.fodderType %> Mängd: <%= c.amount %> <%= c.unit %> Batch: <%= c.lot %></li>
+        <li>Datum: <%= c.date %><br />Fodertyp: <%= c.fodderType %> Mängd: <%= c.amount %> <%= c.unit %> Batch: <%= c.lot %></li>
         <% });%>
       </ul>
       <% } %>
@@ -34,15 +34,30 @@
       </div>
       <div class="form-group">
         <label for="consumptionForm">Enhet</label>
-        <input list="units" class="form-control" id="consumptionFormUnit" name="consumptionUnit">
+            <div class="form-check">
+                  <% units.forEach(function(u){%>
+                  <input type="radio" value="<%= u %>" name="consumptionUnit">
+                  <label class="form-check-label"> <%= u %></label>
+                  <% }); %>
+            </div>
       </div>
       <div class="form-group">
         <label for="consumptionForm">Fodertyp</label>
-        <input list="fodderTypes" class="form-control" id="consumptionFormFodderType" name="consumptionFodderType">
+            <div class="form-check">
+                  <% fodderTypes.forEach(function(f){%>
+                  <input type="radio" value="<%= f %>" name="consumptionFodderType">
+                  <label class="form-check-label"> <%= f %></label>
+                  <% }); %>
+            </div>
       </div>
       <div class="form-group">
         <label for="consumptionForm">Batch</label>
-        <input list="batches" class="form-control" id="consumptionFormBatch" name="consumptionBatch">
+            <div class="form-check">
+                  <% batches.forEach(function(b){%>
+                  <input type="radio" value="<%= b.name %>" name="consumptionBatch">
+                  <label class="form-check-label"> <%= b.name %></label>
+                  <% }); %>
+            </div>
       </div>
       <button type="submit" class="btn btn-primary" value="accept">Spara</button>
     </form>
@@ -50,20 +65,3 @@
   </main>
 </body>
 </html>
-
-<datalist id="units">
-  <option value="kg">
-  <option value="dl">
-</datalist>
-
-<datalist id="fodderTypes">
-  <option value="Hö">
-  <option value="Mineralfoder">
-  <option value="Halm">
-</datalist>
-
-<datalist id="batches">
-<% batches.forEach(function(b){%>
-  <option value="<%= b.name %>"
-<% }); %>
-</datalist>

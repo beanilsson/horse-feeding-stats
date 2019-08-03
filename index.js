@@ -41,6 +41,8 @@ app.post('/batch', (req, res) => {
 });
 
 app.get('/consumption', (req, res) => {
+    const units = ['kg', 'dl'];
+    const fodderTypes = ['Hö', 'Mineralfoder', 'Halm'];
     Consumption.find((err, consumptions) => {
         if (err) {
             console.log(err);
@@ -53,7 +55,9 @@ app.get('/consumption', (req, res) => {
                 } else {
                     res.render('pages/consumption', {
                         batches: batches,
-                        consumptions: consumptions
+                        consumptions: consumptions,
+                        units: units,
+                        fodderTypes: fodderTypes
                     });
                 }
             });
