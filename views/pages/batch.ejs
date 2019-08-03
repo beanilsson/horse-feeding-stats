@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <% include ../partials/head %>
+</head>
+<body class="container">
+  <header>
+    <% include ../partials/header %>
+  </header>
+  <main>
+    <div class="jumbotron">
+      <h1>Hantera batchar</h1>
+    </div>
+    <div class="container">
+      <h2>Sparade batchar</h2>
+      <% if(batches.length > 0) {%>
+      <ul>
+        <% batches.forEach(function(b) { %>
+        <li>Namn: <%= b.name %><br />Vikt (kg): <%= b.weight%></li>
+        <% })%>
+      </ul>
+      <% } %>
+    </div>
+    <div class="container">
+     <h2>Lägg till ny batch</h2>
+    <form action="/batch" method="post">
+      <div class="form-group">
+        <label for="batchForm">Namn</label>
+        <input type="text" class="form-control" id="batchFormName" name="batchName">
+      </div>
+       <div class="form-group">
+        <label for="batchForm">Vikt (kg)</label>
+        <input type="number" class="form-control" id="batchFormWeight" name="batchWeight">
+      </div>
+      <button type="submit" class="btn btn-primary" value="accept">Spara</button>
+    </form>
+    </div>
+  </main>
+</body>
+</html>
