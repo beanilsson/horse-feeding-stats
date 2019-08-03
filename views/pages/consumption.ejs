@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <% include ../partials/head %>
+</head>
+<body class="container">
+  <header>
+    <% include ../partials/header %>
+  </header>
+  <main>
+    <div class="jumbotron">
+      <h1>Hantera utfodring</h1>
+    </div>
+    <div class="container">
+      <h2>Sparade utfodringar</h2>
+      <% if(consumptions.length > 0) {%>
+      <ul>
+        <% consumptions.forEach(function(c) { %>
+        <li>Datum: <%= c.datum %><br />Fodertyp: <%= c.fodderType %> Mängd: <%= c.amount %> <%= c.unit %> Batch: <%= c.lot %></li>
+        <% });%>
+      </ul>
+      <% } %>
+    </div>
+    <div class="container">
+     <h2>Lägg till ny utfodring</h2>
+    <form action="/consumption" method="post">
+      <div class="form-group">
+        <label for="consumptionForm">Datum</label>
+        <input type="date" class="form-control" id="consumptionFormDate" name="consumptionDate">
+      </div>
+       <div class="form-group">
+        <label for="consumptionForm">Mängd</label>
+        <input type="number" class="form-control" id="consumptionFormAmount" name="consumptionAmount">
+      </div>
+      <div class="form-group">
+        <label for="consumptionForm">Enhet</label>
+        <input list="units" class="form-control" id="consumptionFormUnit" name="consumptionUnit">
+      </div>
+      <div class="form-group">
+        <label for="consumptionForm">Fodertyp</label>
+        <input list="fodderTypes" class="form-control" id="consumptionFormFodderType" name="consumptionFodderType">
+      </div>
+      <div class="form-group">
+        <label for="consumptionForm">Batch</label>
+        <input list="batches" class="form-control" id="consumptionFormBatch" name="consumptionBatch">
+      </div>
+      <button type="submit" class="btn btn-primary" value="accept">Spara</button>
+    </form>
+    </div>
+  </main>
+</body>
+</html>
+
+<datalist id="units">
+  <option value="kg">
+  <option value="dl">
+</datalist>
+
+<datalist id="fodderTypes">
+  <option value="Hö">
+  <option value="Mineralfoder">
+  <option value="Halm">
+</datalist>
+
+<datalist id="batches">
+<% batches.forEach(function(b){%>
+  <option value="<%= b.name %>"
+<% }); %>
+</datalist>

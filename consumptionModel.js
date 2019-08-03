@@ -4,7 +4,8 @@ const consumptionSchema = new mongoose.Schema({
     date: Date,
     amount: Number,
     unit: String,
-    type: {type: String}
+    fodderType: String,
+    lot: String
 });
 
-module.exports = mongoose.model('Lot', lotSchema);
+module.exports = mongoose.model('Consumption', consumptionSchema);
