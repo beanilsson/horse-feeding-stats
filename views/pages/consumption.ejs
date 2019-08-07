@@ -16,7 +16,7 @@
       <% if(consumptions.length > 0) {%>
       <ul>
         <% consumptions.forEach(function(c) { %>
-        <li>Datum: <%= c.date %><br />Fodertyp: <%= c.fodderType %> Mängd: <%= c.amount %> <%= c.unit %> Batch: <%= c.lot %></li>
+        <li>Datum: <%= c.date.toISOString().split('T')[0] %><br />Fodertyp: <%= c.fodderType %> Mängd: <%= c.amount %> <%= c.unit %> Batch: <%= c.lot %></li>
         <% });%>
       </ul>
       <% } %>
