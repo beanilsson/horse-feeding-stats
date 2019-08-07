@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const dbUrl = 'mongodb://localhost:27017/hfs';
 const mongoose = require('mongoose');
+const async = require('async');
 const bodyParser = require('body-parser');
 const Lot = require('./lotModel');
 const Consumption = require('./consumptionModel');
@@ -42,32 +43,42 @@ app.post('/batch', (req, res) => {
 });
 
 app.get('/consumption', (req, res) => {
-    const units = ['kg', 'dl'];
-    const fodderTypes = ['Hö', 'Mineralfoder', 'Halm'];
-    Consumption.find((err, consumptions) => {
-        if (err) {
-            console.log(err);
-            res.render('pages/error');
-        } else {
-            Lot.find((err, batches) => {
-                if (err) {
-                    console.log(err);
-                    res.render('pages/error');
-                } else {
-                    res.render('pages/consumption', {
-                        batches: batches,
-                        consumptions: consumptions,
-                        units: units,
-                        fodderTypes: fodderTypes
-                    });
-                }
+    async.parallel({
+        consumptions: (callback) => {
+            Consumption.find((err, consumptions) => {
+                callback(err, consumptions);
             });
-        }
-    });
+        },
+        batches: (callback)=> {
+            Lot.find((err, consumptions) => {
+                callback(err, consumptions);
+            });
+        },
+        horses: (callback) => {
+            Horse.find((err, horses) => {
+                callback(err, horses);
+            });
+        }}, (err, result) => {
+            if (err) {
+                console.log(err);
+                res.render('pages/error');
+            } else {
+                const units = ['kg', 'dl'];
+                const fodderTypes = ['Hö', 'Mineralfoder', 'Halm'];
+
+                res.render('pages/consumption', {
+                    batches: result.batches,
+                    consumptions: result.consumptions,
+                    units: units,
+                    fodderTypes: fodderTypes,
+                    horses: result.horses
+                });
+            }
+        });
 });
 
 app.post('/consumption', (req, res) => {
-    const consumption = new Consumption({date: req.body.consumptionDate, amount: req.body.consumptionAmount, unit: req.body.consumptionUnit, fodderType: req.body.consumptionFodderType, lot: req.body.consumptionBatch});
+    const consumption = new Consumption({date: req.body.consumptionDate, amount: req.body.consumptionAmount, unit: req.body.consumptionUnit, fodderType: req.body.consumptionFodderType, lot: req.body.consumptionBatch, horse: req.body.consumptionHorse});
     consumption.save().then((err) => {
         res.render('pages/consumptionSaved');
     }, (err) => {

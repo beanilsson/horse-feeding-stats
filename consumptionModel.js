@@ -5,7 +5,8 @@ const consumptionSchema = new mongoose.Schema({
     amount: Number,
     unit: String,
     fodderType: String,
-    lot: String
+    lot: String,
+    horse: String
 });
 
 module.exports = mongoose.model('Consumption', consumptionSchema);

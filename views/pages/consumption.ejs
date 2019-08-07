@@ -16,7 +16,7 @@
       <% if(consumptions.length > 0) {%>
       <ul>
         <% consumptions.forEach(function(c) { %>
-        <li>Datum: <%= c.date.toISOString().split('T')[0] %><br />Fodertyp: <%= c.fodderType %> Mängd: <%= c.amount %> <%= c.unit %> Batch: <%= c.lot %></li>
+        <li>Datum: <%= c.date.toISOString().split('T')[0] %> Häst: <%= c.horse %><br />Fodertyp: <%= c.fodderType %> Mängd: <%= c.amount %> <%= c.unit %> Batch: <%= c.lot %></li>
         <% });%>
       </ul>
       <% } %>
@@ -56,6 +56,15 @@
                   <% batches.forEach(function(b){%>
                   <input type="radio" value="<%= b.name %>" name="consumptionBatch">
                   <label class="form-check-label"> <%= b.name %></label>
+                  <% }); %>
+            </div>
+      </div>
+      <div class="form-group">
+        <label for="consumptionForm">Häst</label>
+            <div class="form-check">
+                  <% horses.forEach(function(h){%>
+                  <input type="radio" value="<%= h.name %>" name="consumptionHorse">
+                  <label class="form-check-label"> <%= h.name %></label>
                   <% }); %>
             </div>
       </div>
