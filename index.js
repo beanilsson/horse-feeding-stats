@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const Lot = require('./lotModel');
 const Consumption = require('./consumptionModel');
+const Horse = require('./horseModel');
 
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({
@@ -69,6 +70,29 @@ app.post('/consumption', (req, res) => {
     const consumption = new Consumption({date: req.body.consumptionDate, amount: req.body.consumptionAmount, unit: req.body.consumptionUnit, fodderType: req.body.consumptionFodderType, lot: req.body.consumptionBatch});
     consumption.save().then((err) => {
         res.render('pages/consumptionSaved');
+    }, (err) => {
+        console.log(err);
+        res.sendStatus(500);
+    });
+});
+
+app.get('/horse', (req, res) => {
+    Horse.find((err, horses) => {
+        if (err) {
+            console.log(err);
+            res.render('pages/error');
+        } else {
+            res.render('pages/horse', {
+                horses: horses
+            });
+        }
+    });
+});
+
+app.post('/horse', (req, res) => {
+    const horse = new Horse({name: req.body.horseName, weight: req.body.horseWeight, birthYear: req.body.horseBirthYear});
+    horse.save().then((err) => {
+        res.render('pages/horseSaved');
     }, (err) => {
         console.log(err);
         res.sendStatus(500);

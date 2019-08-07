@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <% include ../partials/head %>
+</head>
+<body class="container">
+  <header>
+    <% include ../partials/header %>
+  </header>
+  <main>
+    <div class="jumbotron">
+      <h1>Hantera hästar</h1>
+    </div>
+    <div class="container">
+      <h2>Sparade hästar</h2>
+      <% if(horses.length > 0) {%>
+      <ul>
+        <% horses.forEach(function(h) { %>
+        <li>Namn: <%= h.name %><br />Vikt: <%= h.weight %> Födelseår: <%= h.birthYear %></li>
+        <% });%>
+      </ul>
+      <% } %>
+    </div>
+    <div class="container">
+     <h2>Lägg till ny häst</h2>
+    <form action="/horse" method="post">
+      <div class="form-group">
+        <label for="horseForm">Namn</label>
+        <input type="text" class="form-control" id="horseFormName" name="horseName">
+      </div>
+       <div class="form-group">
+        <label for="horseForm">Vikt</label>
+        <input type="number" class="form-control" id="horseFormWeight" name="horseWeight">
+      </div>
+      <div class="form-group">
+        <label for="horseForm">Födelseår</label>
+        <input type="number" class="form-control" id="horseFormbirthYear" name="horseBirthYear">
+      </div>
+      <button type="submit" class="btn btn-primary" value="accept">Spara</button>
+    </form>
+    </div>
+  </main>
+</body>
+</html>
