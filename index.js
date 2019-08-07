@@ -20,13 +20,40 @@ app.get('/', (req, res) => {
 });
 
 app.get('/batch', (req, res) => {
-    Lot.find((err, data) => {
+    async.parallel({
+        batches: (callback) => {
+            Lot.find((err, batches) => {
+                callback(err, batches);
+            });
+        },
+        consumptions: (callback) => {
+            Consumption.find((err, consumptions) => {
+                callback(err, consumptions);
+            });
+        }
+    }, (err, results) => {
         if (err) {
             console.log(err);
             res.render('pages/error');
         } else {
+
+            results.batches.forEach((batch) => {
+                let left = null;
+                let batchWeight = batch.weight;
+                results.consumptions.forEach((consumption) => {
+                    if (batch.name === consumption.lot) {
+                        left = batchWeight -= consumption.amount;
+                    }
+                });
+                if (left === null){
+                    batch.left = batch.weight;
+                } else {
+                    batch.left = left;
+                }
+            });
+
             res.render('pages/batch', {
-                batches: data
+                batches: results.batches
             });
         }
     });

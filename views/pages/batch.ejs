@@ -16,7 +16,7 @@
       <% if(batches.length > 0) {%>
       <ul>
         <% batches.forEach(function(b) { %>
-        <li>Namn: <%= b.name %><br />Vikt (kg): <%= b.weight%></li>
+        <li>Namn: <%= b.name %><br />Vikt (kg): <%= b.weight%> Kvar (kg): <%= b.left %></li>
         <% })%>
       </ul>
       <% } %>
