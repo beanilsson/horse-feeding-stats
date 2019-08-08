@@ -9,7 +9,10 @@ Collect data about horses' food to calculate consumption
 Node and mongodb is required
 
 ## Run
-`node index.js`
+`npm start`
+
+## Tests
+`npm test`
 
 Browse to `localhost:3000`
 
