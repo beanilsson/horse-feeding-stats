@@ -4,9 +4,10 @@ const dbUrl = 'mongodb://localhost:27017/hfs';
 const mongoose = require('mongoose');
 const async = require('async');
 const bodyParser = require('body-parser');
-const Batch = require('./batchModel');
-const Consumption = require('./consumptionModel');
-const Horse = require('./horseModel');
+
+const batches = require('./controllers/batchController');
+const consumptions = require('./controllers/consumptionController');
+const horses = require('./controllers/horseController');
 
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({
@@ -19,123 +20,10 @@ app.get('/', (req, res) => {
     res.render('pages/index');
 });
 
-app.get('/batch', (req, res) => {
-    async.parallel({
-        batches: (callback) => {
-            Batch.find((err, batches) => {
-                callback(err, batches);
-            });
-        },
-        consumptions: (callback) => {
-            Consumption.find((err, consumptions) => {
-                callback(err, consumptions);
-            });
-        }
-    }, (err, results) => {
-        if (err) {
-            console.log(err);
-            res.render('pages/error');
-        } else {
+app.use('/batches', batches);
+app.use('/consumptions', consumptions);
+app.use('/horses', horses);
 
-            results.batches.forEach((batch) => {
-                let left = null;
-                let batchWeight = batch.weight;
-                results.consumptions.forEach((consumption) => {
-                    if (batch.name === consumption.batch) {
-                        left = batchWeight -= consumption.amount;
-                    }
-                });
-                if (left === null){
-                    batch.left = batch.weight;
-                } else {
-                    batch.left = left;
-                }
-            });
-
-            res.render('pages/batch', {
-                batches: results.batches
-            });
-        }
-    });
-});
-
-app.post('/batch', (req, res) => {
-    const batch = new Batch({name: req.body.batchName, weight: req.body.batchWeight});
-    batch.save().then((err) => {
-        res.render('pages/batchSaved');
-    }, (err) => {
-        console.log(err);
-        res.sendStatus(500);
-    });
-});
-
-app.get('/consumption', (req, res) => {
-    async.parallel({
-        consumptions: (callback) => {
-            Consumption.find((err, consumptions) => {
-                callback(err, consumptions);
-            });
-        },
-        batches: (callback)=> {
-            Batch.find((err, consumptions) => {
-                callback(err, consumptions);
-            });
-        },
-        horses: (callback) => {
-            Horse.find((err, horses) => {
-                callback(err, horses);
-            });
-        }}, (err, result) => {
-            if (err) {
-                console.log(err);
-                res.render('pages/error');
-            } else {
-                const units = ['kg', 'dl'];
-                const fodderTypes = ['Hö', 'Mineralfoder', 'Halm'];
-
-                res.render('pages/consumption', {
-                    batches: result.batches,
-                    consumptions: result.consumptions,
-                    units: units,
-                    fodderTypes: fodderTypes,
-                    horses: result.horses
-                });
-            }
-        });
-});
-
-app.post('/consumption', (req, res) => {
-    const consumption = new Consumption({date: req.body.consumptionDate, amount: req.body.consumptionAmount, unit: req.body.consumptionUnit, fodderType: req.body.consumptionFodderType, batch: req.body.consumptionBatch, horse: req.body.consumptionHorse});
-    consumption.save().then((err) => {
-        res.render('pages/consumptionSaved');
-    }, (err) => {
-        console.log(err);
-        res.sendStatus(500);
-    });
-});
-
-app.get('/horse', (req, res) => {
-    Horse.find((err, horses) => {
-        if (err) {
-            console.log(err);
-            res.render('pages/error');
-        } else {
-            res.render('pages/horse', {
-                horses: horses
-            });
-        }
-    });
-});
-
-app.post('/horse', (req, res) => {
-    const horse = new Horse({name: req.body.horseName, weight: req.body.horseWeight, birthYear: req.body.horseBirthYear});
-    horse.save().then((err) => {
-        res.render('pages/horseSaved');
-    }, (err) => {
-        console.log(err);
-        res.sendStatus(500);
-    });
-});
 
 mongoose.connect(dbUrl, {useNewUrlParser: true});
 
