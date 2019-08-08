@@ -7,8 +7,8 @@ describe('Server is alive', () => {
         it('returns status code 200', (done) => {
             request.get(baseUrl + '/', (error, response, body) => {
                 expect(response.statusCode).toBe(200);
+                done();
             });
-            done();
         });
     });
 });
