@@ -47,20 +47,23 @@ router.post('/', (req, res) => {
     let currentDate = firstDate;
     let tempDate = null;
     let dates = [];
+    const horses = req.body.consumptionHorse;
 
-    while(currentDate <= lastDate) {
-        dates.push(currentDate);
-        tempDate = new Date(currentDate);
-        tempDate.setDate(tempDate.getDate() + 1);
-        currentDate = tempDate;
-    };
+    horses.forEach((horse) => {
+        while(currentDate <= lastDate) {
+            dates.push(currentDate);
+            tempDate = new Date(currentDate);
+            tempDate.setDate(tempDate.getDate() + 1);
+            currentDate = tempDate;
+        };
 
-    dates.forEach((date) => {
-        const consumption = new Consumption({date: date, amount: req.body.consumptionAmount, unit: req.body.consumptionUnit, fodderType: req.body.consumptionFodderType, batch: req.body.consumptionBatch, horse: req.body.consumptionHorse});
-        consumption.save().then(() => {
-        }, (err) => {
-            console.log(err);
-            res.render('pages/error');
+        dates.forEach((date) => {
+            const consumption = new Consumption({date: date, amount: req.body.consumptionAmount, unit: req.body.consumptionUnit, fodderType: req.body.consumptionFodderType, batch: req.body.consumptionBatch, horse: horse});
+            consumption.save().then(() => {
+            }, (err) => {
+                console.log(err);
+                res.render('pages/error');
+            });
         });
     });
     res.render('pages/consumptionSaved');

@@ -67,7 +67,7 @@
         <label for="consumptionForm">Häst</label>
             <div class="form-check">
                   <% horses.forEach(function(h){%>
-                  <input type="radio" value="<%= h.name %>" name="consumptionHorse">
+                  <input type="checkbox" value="<%= h.name %>" name="consumptionHorse">
                   <label class="form-check-label"> <%= h.name %></label>
                   <% }); %>
             </div>
