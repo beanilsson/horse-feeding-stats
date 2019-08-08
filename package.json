@@ -4,7 +4,7 @@
   "description": "Horse food batch statistics",
   "main": "index.js",
   "scripts": {
-      "test": "jasmine",
+      "test": "node_modules/jasmine/bin/jasmine.js",
       "start": "node index.js"
   },
   "author": "",
