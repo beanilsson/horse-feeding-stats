@@ -25,11 +25,15 @@
      <h2>Lägg till ny utfodring</h2>
     <form action="/consumptions" method="post">
       <div class="form-group">
-        <label for="consumptionForm">Datum</label>
-        <input type="date" class="form-control" id="consumptionFormDate" name="consumptionDate">
+        <label for="consumptionForm">Datum - första dagen</label>
+        <input type="date" class="form-control" id="consumptionFormDateFirst" name="consumptionDateFirst">
+      </div>
+      <div class="form-group">
+        <label for="consumptionForm">Datum - sista dagen</label>
+        <input type="date" class="form-control" id="consumptionFormDateLast" name="consumptionDateLast">
       </div>
        <div class="form-group">
-        <label for="consumptionForm">Mängd</label>
+        <label for="consumptionForm">Mängd (per dag)</label>
         <input type="number" class="form-control" id="consumptionFormAmount" name="consumptionAmount">
       </div>
       <div class="form-group">

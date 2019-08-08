@@ -42,13 +42,28 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-    const consumption = new Consumption({date: req.body.consumptionDate, amount: req.body.consumptionAmount, unit: req.body.consumptionUnit, fodderType: req.body.consumptionFodderType, batch: req.body.consumptionBatch, horse: req.body.consumptionHorse});
-    consumption.save().then((err) => {
-        res.render('pages/consumptionSaved');
-    }, (err) => {
-        console.log(err);
-        res.sendStatus(500);
+    const firstDate = new Date(req.body.consumptionDateFirst);
+    const lastDate = new Date(req.body.consumptionDateLast);
+    let currentDate = firstDate;
+    let tempDate = null;
+    let dates = [];
+
+    while(currentDate <= lastDate) {
+        dates.push(currentDate);
+        tempDate = new Date(currentDate);
+        tempDate.setDate(tempDate.getDate() + 1);
+        currentDate = tempDate;
+    };
+
+    dates.forEach((date) => {
+        const consumption = new Consumption({date: date, amount: req.body.consumptionAmount, unit: req.body.consumptionUnit, fodderType: req.body.consumptionFodderType, batch: req.body.consumptionBatch, horse: req.body.consumptionHorse});
+        consumption.save().then(() => {
+        }, (err) => {
+            console.log(err);
+            res.render('pages/error');
+        });
     });
+    res.render('pages/consumptionSaved');
 });
 
 module.exports = router;
