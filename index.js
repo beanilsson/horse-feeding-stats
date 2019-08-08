@@ -4,7 +4,7 @@ const dbUrl = 'mongodb://localhost:27017/hfs';
 const mongoose = require('mongoose');
 const async = require('async');
 const bodyParser = require('body-parser');
-const Lot = require('./lotModel');
+const Batch = require('./batchModel');
 const Consumption = require('./consumptionModel');
 const Horse = require('./horseModel');
 
@@ -22,7 +22,7 @@ app.get('/', (req, res) => {
 app.get('/batch', (req, res) => {
     async.parallel({
         batches: (callback) => {
-            Lot.find((err, batches) => {
+            Batch.find((err, batches) => {
                 callback(err, batches);
             });
         },
@@ -41,7 +41,7 @@ app.get('/batch', (req, res) => {
                 let left = null;
                 let batchWeight = batch.weight;
                 results.consumptions.forEach((consumption) => {
-                    if (batch.name === consumption.lot) {
+                    if (batch.name === consumption.batch) {
                         left = batchWeight -= consumption.amount;
                     }
                 });
@@ -60,8 +60,8 @@ app.get('/batch', (req, res) => {
 });
 
 app.post('/batch', (req, res) => {
-    const lot = new Lot({name: req.body.batchName, weight: req.body.batchWeight});
-    lot.save().then((err) => {
+    const batch = new Batch({name: req.body.batchName, weight: req.body.batchWeight});
+    batch.save().then((err) => {
         res.render('pages/batchSaved');
     }, (err) => {
         console.log(err);
@@ -77,7 +77,7 @@ app.get('/consumption', (req, res) => {
             });
         },
         batches: (callback)=> {
-            Lot.find((err, consumptions) => {
+            Batch.find((err, consumptions) => {
                 callback(err, consumptions);
             });
         },
@@ -105,7 +105,7 @@ app.get('/consumption', (req, res) => {
 });
 
 app.post('/consumption', (req, res) => {
-    const consumption = new Consumption({date: req.body.consumptionDate, amount: req.body.consumptionAmount, unit: req.body.consumptionUnit, fodderType: req.body.consumptionFodderType, lot: req.body.consumptionBatch, horse: req.body.consumptionHorse});
+    const consumption = new Consumption({date: req.body.consumptionDate, amount: req.body.consumptionAmount, unit: req.body.consumptionUnit, fodderType: req.body.consumptionFodderType, batch: req.body.consumptionBatch, horse: req.body.consumptionHorse});
     consumption.save().then((err) => {
         res.render('pages/consumptionSaved');
     }, (err) => {
