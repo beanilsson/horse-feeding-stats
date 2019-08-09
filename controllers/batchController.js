@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const async = require('async');
+const uniqueError = require('../utils/uniqueError');
 
 const Batch = require('../models/batchModel');
 const Consumption = require('../models/consumptionModel');
@@ -67,9 +68,8 @@ router.post('/', (req, res) => {
         res.render('pages/batchSaved');
     }, (err) => {
         let errorMessage = '';
-
-        if(err.errors.name.kind === 'unique') {
-            errorMessage = 'Det finns redan en batch med namnet ' + err.errors.name.value + '. Var god välj ett annat namn.';
+        if (uniqueError.check(err) === true) {
+            errorMessage = uniqueError.createMessage('batch', err);
         } else {
             errorMessage = 'Ett oväntat fel uppstod';
         }
