@@ -1,24 +1,26 @@
 {
-  "name": "horse-feeding-stats",
-  "version": "0.0.1",
-  "description": "Horse food batch statistics",
-  "main": "index.js",
-  "scripts": {
-      "test": "node_modules/jasmine/bin/jasmine.js",
-      "start": "node index.js"
-  },
-  "author": "",
-  "license": "GPL-3.0",
-  "dependencies": {
-    "async": "^3.1.0",
-    "body-parser": "^1.19.0",
-    "ejs": "^2.6.2",
-    "express": "^4.17.1",
-    "mongodb": "^3.3.0-beta2",
-    "mongoose": "^5.6.7"
-  },
-  "devDependencies": {
-    "jasmine": "^3.4.0",
-    "request": "^2.88.0"
-  }
+    "name": "horse-feeding-stats",
+    "version": "0.0.1",
+    "description": "Horse food batch statistics",
+    "main": "index.js",
+    "scripts": {
+        "test": "node_modules/jasmine/bin/jasmine.js",
+        "start": "nodemon ./index.js",
+        "prodStart": "node index.js"
+    },
+    "author": "",
+    "license": "GPL-3.0",
+    "dependencies": {
+        "async": "^3.1.0",
+        "body-parser": "^1.19.0",
+        "ejs": "^2.6.2",
+        "express": "^4.17.1",
+        "mongodb": "^3.3.0-beta2",
+        "mongoose": "^5.6.7"
+    },
+    "devDependencies": {
+        "jasmine": "^3.4.0",
+        "nodemon": "^1.19.1",
+        "request": "^2.88.0"
+    }
 }

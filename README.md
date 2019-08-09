@@ -9,7 +9,8 @@ Collect data about horses' food to calculate consumption
 Node and mongodb is required
 
 ## Run
-`npm start`
+`npm start` - Starts a nodemon wrapper
+`npm prodStart` - Starts a node wrapper
 
 ## Tests
 `npm test`
