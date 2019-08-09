@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const async = require('async');
 
 const Horse = require('../models/horseModel');
 
