@@ -4,6 +4,7 @@ const async = require('async');
 
 const Batch = require('../models/batchModel');
 const Consumption = require('../models/consumptionModel');
+const AnimalGroup = require('../models/animalGroupModel');
 
 router.get('/', (req, res) => {
     async.parallel({
@@ -29,7 +30,18 @@ router.get('/', (req, res) => {
 
                 results.consumptions.forEach((consumption) => {
                     if (batch.name === consumption.batch) {
-                        left = batchWeight -= consumption.amount;
+                        if (consumption.animalGroup) {
+                            AnimalGroup.find({name: consumption.animalGroup}, (err, animalGroup) => {
+                                if (err) {
+                                    console.log(err);
+                                    res.render('pages/error');
+                                } else {
+                                    left = batchWeight -= (consumption.amount *= animalGroup.amount);
+                                }
+                            });
+                        } else {
+                            left = batchWeight -= consumption.amount;
+                        }
                     }
                 });
 
