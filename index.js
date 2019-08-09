@@ -8,6 +8,7 @@ const bodyParser = require('body-parser');
 const batches = require('./controllers/batchController');
 const consumptions = require('./controllers/consumptionController');
 const horses = require('./controllers/horseController');
+const animalGroups = require('./controllers/animalGroupController');
 
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({
@@ -23,6 +24,7 @@ app.get('/', (req, res) => {
 app.use('/batches', batches);
 app.use('/consumptions', consumptions);
 app.use('/horses', horses);
+app.use('/animalGroups', animalGroups);
 
 
 mongoose.connect(dbUrl, {useNewUrlParser: true});

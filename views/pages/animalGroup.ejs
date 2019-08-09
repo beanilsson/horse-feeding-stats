@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <% include ../partials/head %>
+</head>
+<body class="container">
+  <header>
+    <% include ../partials/header %>
+  </header>
+  <main>
+    <div class="jumbotron">
+      <h1>Hantera djurgrupper</h1>
+    </div>
+    <div class="container">
+      <h2>Sparade djurgrupper</h2>
+      <% if(animalGroups.length > 0) {%>
+      <ul>
+        <% animalGroups.forEach(function(animalGroup) { %>
+        <li>Namn: <%= animalGroup.name %><br />Antal djur: <%= animalGroup.amount %></li>
+        <% });%>
+      </ul>
+      <% } %>
+    </div>
+    <div class="container">
+     <h2>Lägg till ny djurgrupp</h2>
+    <form action="/animalGroups" method="post">
+      <div class="form-group">
+        <label for="animalGroupForm">Namn</label>
+        <input type="text" class="form-control" id="animalGroupFormName" name="animalGroupName">
+      </div>
+       <div class="form-group">
+        <label for="animalGroupForm">Antal djur</label>
+        <input type="number" class="form-control" id="animalGroupFormAmount" name="animalGroupAmount">
+      </div>
+      <button type="submit" class="btn btn-primary" value="accept">Spara</button>
+    </form>
+    </div>
+  </main>
+</body>
+</html>
