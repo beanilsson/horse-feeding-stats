@@ -1,40 +1,59 @@
 <!DOCTYPE html>
 <html lang="sv">
-<head>
-  <% include ../partials/head %>
-</head>
-<body class="container">
-  <header>
-    <% include ../partials/header %>
-  </header>
-  <main>
-    <div class="jumbotron">
-      <h1>Hantera batchar</h1>
-    </div>
-    <div class="container">
-      <h2>Sparade batchar</h2>
-      <% if(batches.length > 0) {%>
-      <ul>
-        <% batches.forEach(function(b) { %>
-        <li>Namn: <%= b.name %><br />Vikt (kg): <%= b.weight%> Kvar (kg): <%= b.left %></li>
-        <% })%>
-      </ul>
-      <% } %>
-    </div>
-    <div class="container">
-     <h2>Lägg till ny batch</h2>
-    <form action="/batches" method="post">
-      <div class="form-group">
-        <label for="batchForm">Namn</label>
-        <input type="text" class="form-control" id="batchFormName" name="batchName">
+  <head>
+    <% include ../partials/head %>
+  </head>
+  <body class="container">
+    <header>
+      <% include ../partials/header %>
+    </header>
+    <main>
+      <div class="jumbotron">
+        <h1>Hantera batchar</h1>
       </div>
-       <div class="form-group">
-        <label for="batchForm">Vikt (kg)</label>
-        <input type="number" class="form-control" id="batchFormWeight" name="batchWeight">
+      <div class="container">
+        <h2>Sparade batchar</h2>
+        <% if(batches.length > 0) {%>
+        <ul>
+          <% batches.forEach(function(b) { %>
+          <li>Namn: <%= b.name %><br />Vikt (kg): <%= b.weight%> Kvar (kg): <%= b.left %>
+            <% if(b.refillable === true) {%>
+            <form action="/batches/<%= b.name %>/<%= b.weight %>" method="post">
+              <div class="form-group">
+                <label for="batchForm">Mängd: </label>
+                <input type="number" class="form-control" id="batchFormRefillAmount" name="batchRefillAmount">
+              </div>
+              <button type="submit" class="btn btn-primary" value="accept">Fyll på</button>
+            </form>
+            <%  }%>
+          </li>
+          <% })%>
+        </ul>
+        <% } %>
       </div>
-      <button type="submit" class="btn btn-primary" value="accept">Spara</button>
-    </form>
-    </div>
-  </main>
-</body>
+      <div class="container">
+        <h2>Lägg till ny batch</h2>
+        <form action="/batches" method="post">
+          <div class="form-group">
+            <label for="batchForm">Namn</label>
+            <input type="text" class="form-control" id="batchFormName" name="batchName">
+          </div>
+          <div class="form-group">
+            <label for="batchForm">Vikt (kg)</label>
+            <input type="number" class="form-control" id="batchFormWeight" name="batchWeight">
+          </div>
+          <div class="form-group">
+            <label for="batchForm">Påfyllningsbar</label>
+            <div class="form-check">
+              <input type="radio" value="Ja" id="batchFormRefillable" name="batchRefillable">
+              <label class="form-check-label"> Ja</label>
+              <input type="radio" value="Nej" id="batchFormRefillable" name="batchRefillable">
+              <label class="form-check-label"> Nej</label>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary" value="accept">Spara</button>
+        </form>
+      </div>
+    </main>
+  </body>
 </html>
