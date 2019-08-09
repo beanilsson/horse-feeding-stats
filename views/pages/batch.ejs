@@ -12,6 +12,11 @@
         <h1>Hantera batchar</h1>
       </div>
       <div class="container">
+        <% if (errorMessage) {%>
+        <div class="alert alert-danger">
+          <%= errorMessage %>
+        </div>
+        <%}%>
         <h2>Sparade batchar</h2>
         <% if(batches.length > 0) {%>
         <ul>
@@ -21,7 +26,7 @@
             <form action="/batches/<%= b.name %>/<%= b.weight %>" method="post">
               <div class="form-group">
                 <label for="batchForm">Mängd: </label>
-                <input type="number" class="form-control" id="batchFormRefillAmount" name="batchRefillAmount">
+                <input type="number" class="form-control" id="batchFormRefillAmount" name="batchRefillAmount" required>
               </div>
               <button type="submit" class="btn btn-primary" value="accept">Fyll på</button>
             </form>
@@ -36,18 +41,18 @@
         <form action="/batches" method="post">
           <div class="form-group">
             <label for="batchForm">Namn</label>
-            <input type="text" class="form-control" id="batchFormName" name="batchName">
+            <input type="text" class="form-control" id="batchFormName" name="batchName" required>
           </div>
           <div class="form-group">
             <label for="batchForm">Vikt (kg)</label>
-            <input type="number" class="form-control" id="batchFormWeight" name="batchWeight">
+            <input type="number" class="form-control" id="batchFormWeight" name="batchWeight" required>
           </div>
           <div class="form-group">
             <label for="batchForm">Påfyllningsbar</label>
             <div class="form-check">
-              <input type="radio" value="Ja" id="batchFormRefillable" name="batchRefillable">
+              <input type="radio" value="Ja" id="batchFormRefillable" name="batchRefillable" required>
               <label class="form-check-label"> Ja</label>
-              <input type="radio" value="Nej" id="batchFormRefillable" name="batchRefillable">
+              <input type="radio" value="Nej" id="batchFormRefillable" name="batchRefillable" required>
               <label class="form-check-label"> Nej</label>
             </div>
           </div>

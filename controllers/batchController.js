@@ -53,7 +53,8 @@ router.get('/', (req, res) => {
             });
 
             res.render('pages/batch', {
-                batches: results.batches
+                batches: results.batches,
+                errorMessage: null
             });
         }
     });
@@ -65,8 +66,25 @@ router.post('/', (req, res) => {
     batch.save().then((err) => {
         res.render('pages/batchSaved');
     }, (err) => {
-        console.log(err);
-        res.sendStatus(500);
+        let errorMessage = '';
+
+        if(err.errors.name.kind === 'unique') {
+            errorMessage = 'Det finns redan en batch med namnet ' + err.errors.name.value + '. Var god välj ett annat namn.';
+        } else {
+            errorMessage = 'Ett oväntat fel uppstod';
+        }
+
+        Batch.find((err, batches) => {
+            if (err) {
+                console.log(err);
+                res.sendStatus(500);
+            } else {
+                res.render('pages/batch', {
+                    batches: batches,
+                    errorMessage: errorMessage
+                });
+            }
+        });
     });
 });
 
