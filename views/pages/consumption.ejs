@@ -26,21 +26,21 @@
     <form action="/consumptions" method="post">
       <div class="form-group">
         <label for="consumptionForm">Datum - första dagen</label>
-        <input type="date" class="form-control" id="consumptionFormDateFirst" name="consumptionDateFirst">
+        <input type="date" class="form-control" id="consumptionFormDateFirst" name="consumptionDateFirst" required>
       </div>
       <div class="form-group">
         <label for="consumptionForm">Datum - sista dagen</label>
-        <input type="date" class="form-control" id="consumptionFormDateLast" name="consumptionDateLast">
+        <input type="date" class="form-control" id="consumptionFormDateLast" name="consumptionDateLast" required>
       </div>
        <div class="form-group">
         <label for="consumptionForm">Mängd (per dag)</label>
-        <input type="number" class="form-control" id="consumptionFormAmount" name="consumptionAmount">
+        <input type="number" class="form-control" id="consumptionFormAmount" name="consumptionAmount" required>
       </div>
       <div class="form-group">
         <label for="consumptionForm">Enhet</label>
             <div class="form-check">
                   <% units.forEach(function(u){%>
-                  <input type="radio" value="<%= u %>" name="consumptionUnit">
+                  <input type="radio" value="<%= u %>" name="consumptionUnit" required>
                   <label class="form-check-label"> <%= u %></label>
                   <% }); %>
             </div>
@@ -49,7 +49,7 @@
         <label for="consumptionForm">Fodertyp</label>
             <div class="form-check">
                   <% fodderTypes.forEach(function(f){%>
-                  <input type="radio" value="<%= f %>" name="consumptionFodderType">
+                  <input type="radio" value="<%= f %>" name="consumptionFodderType" required>
                   <label class="form-check-label"> <%= f %></label>
                   <% }); %>
             </div>
@@ -58,7 +58,7 @@
         <label for="consumptionForm">Batch</label>
             <div class="form-check">
                   <% batches.forEach(function(b){%>
-                  <input type="radio" value="<%= b.name %>" name="consumptionBatch">
+                  <input type="radio" value="<%= b.name %>" name="consumptionBatch" required>
                   <label class="form-check-label"> <%= b.name %></label>
                   <% }); %>
             </div>
