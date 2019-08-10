@@ -9,10 +9,10 @@
   </header>
   <main>
     <div class="jumbotron">
-      <h1>Hantera djurgrupper</h1>
+      <h1>Hantera djur och djurgrupper</h1>
     </div>
     <div class="container">
-      <h2>Sparade djurgrupper</h2>
+      <h2>Sparade djur och djurgrupper</h2>
       <% if(animalGroups.length > 0) {%>
       <ul>
         <% animalGroups.forEach(function(animalGroup) { %>
@@ -22,7 +22,7 @@
       <% } %>
     </div>
     <div class="container">
-     <h2>Lägg till ny djurgrupp</h2>
+     <h2>Lägg till ny djurgrupp/nytt djur</h2>
     <form action="/animalGroups" method="post">
       <div class="form-group">
         <label for="animalGroupForm">Namn</label>
