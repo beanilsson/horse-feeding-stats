@@ -16,7 +16,7 @@
       <% if(consumptions.length > 0) {%>
       <ul>
         <% consumptions.forEach(function(c) { %>
-        <li>Datum: <%= c.date.toISOString().split('T')[0] %> Häst: <%= c.horse %> Djurgrupp: <%= c.animalGroup %><br />Fodertyp: <%= c.fodderType %> Mängd: <%= c.amount %> <%= c.unit %> Batch: <%= c.batch %></li>
+        <li>Datum: <%= c.date.toISOString().split('T')[0] %> Djurgrupp: <%= c.animalGroup %><br />Fodertyp: <%= c.fodderType %> Mängd: <%= c.amount %> <%= c.unit %> Batch: <%= c.batch %></li>
         <% });%>
       </ul>
       <% } %>
@@ -64,19 +64,10 @@
             </div>
       </div>
       <div class="form-group">
-        <label for="consumptionForm">Häst(ar)</label>
-            <div class="form-check">
-                  <% horses.forEach(function(h){%>
-                  <input type="checkbox" value="<%= h.name %>" name="consumptionHorse">
-                  <label class="form-check-label"> <%= h.name %></label>
-                  <% }); %>
-            </div>
-      </div>
-      <div class="form-group">
         <label for="consumptionForm">Djurgrupp(er)</label>
         <div class="form-check">
           <% animalGroups.forEach(function(animalGroup){%>
-          <input type="checkbox" value="<%= animalGroup.name %>" name="consumptionAnimalGroup">
+          <input type="checkbox" value="<%= animalGroup.name %>" name="consumptionAnimalGroup" required>
           <label class="form-check-label"> <%= animalGroup.name %></label>
           <% }); %>
         </div>

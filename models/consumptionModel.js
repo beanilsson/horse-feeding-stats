@@ -5,7 +5,6 @@ const consumptionSchema = new mongoose.Schema({
     amount: { type: Number, required: true },
     unit: { type: String, required: true },
     batch: { type: String, required: true },
-    horse: String,
     animalGroup: String,
     fodderType: { type: String, required: true } //move fodderType to batch
 });
