@@ -18,44 +18,49 @@ router.get('/', (req, res) => {
             Consumption.find((err, consumptions) => {
                 callback(err, consumptions);
             });
+        },
+        animalGroups: (callback) => {
+            AnimalGroup.find((err, animalGroups) => {
+                callback(err, animalGroups);
+            });
         }
     }, (err, results) => {
         if (err) {
             console.log(err);
             res.render('pages/error');
         } else {
+            let left = null;
+            let batchWeight = null;
+            let animalGroup = null;
 
-            results.batches.forEach((batch) => {
-                let left = null;
-                let batchWeight = batch.weight;
+            async.each(results.batches, (batch, callback) => {
+                batchWeight = batch.weight;
 
                 results.consumptions.forEach((consumption) => {
                     if (batch.name === consumption.batch) {
-                        if (consumption.animalGroup) {
-                            AnimalGroup.find({name: consumption.animalGroup}, (err, animalGroup) => {
-                                if (err) {
-                                    console.log(err);
-                                    res.render('pages/error');
-                                } else {
-                                    left = batchWeight -= (consumption.amount *= animalGroup.amount);
-                                }
-                            });
-                        } else {
-                            left = batchWeight -= consumption.amount;
-                        }
+
+                        animalGroup = results.animalGroups.find((ag) => {
+                            return ag.name === consumption.animalGroup;
+                        });
+
+                        left = batchWeight -= (consumption.amount *= animalGroup.amount);
+
                     }
                 });
 
                 if (left === null){
                     batch.left = batch.weight;
+                    callback();
                 } else {
                     batch.left = left;
+                    left = null;
+                    callback();
                 }
-            });
-
-            res.render('pages/batch', {
-                batches: results.batches,
-                errorMessage: null
+            }, (err) => {
+                res.render('pages/batch', {
+                    batches: results.batches,
+                    errorMessage: null
+                });
             });
         }
     });
