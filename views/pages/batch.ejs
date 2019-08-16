@@ -21,7 +21,14 @@
         <% if(batches.length > 0) {%>
         <ul class="list-group">
           <% batches.forEach(function(b) { %>
-          <li class="list-group-item">Namn: <%= b.name %><br />Fodertyp: <%= b.fodderType %> Vikt (kg): <%= b.weight%> Kvar (kg): <%= b.left %>
+          <li class="list-group-item">
+            Namn: <%= b.name %>
+            <br />
+            Fodertyp: <%= b.fodderType %>
+            <br />
+            Vikt (kg): <%= b.weight%>
+            <br />
+            Kvar (kg): <%= b.left %>
             <% if(b.refillable === true) {%>
             <form action="/batches/<%= b.name %>/<%= b.weight %>" method="post">
               <div class="form-group">
