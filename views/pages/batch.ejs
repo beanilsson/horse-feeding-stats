@@ -19,9 +19,9 @@
         <%}%>
         <h2>Sparade batchar</h2>
         <% if(batches.length > 0) {%>
-        <ul>
+        <ul class="list-group">
           <% batches.forEach(function(b) { %>
-          <li>Namn: <%= b.name %><br />Vikt (kg): <%= b.weight%> Kvar (kg): <%= b.left %>
+          <li class="list-group-item">Namn: <%= b.name %><br />Vikt (kg): <%= b.weight%> Kvar (kg): <%= b.left %>
             <% if(b.refillable === true) {%>
             <form action="/batches/<%= b.name %>/<%= b.weight %>" method="post">
               <div class="form-group">

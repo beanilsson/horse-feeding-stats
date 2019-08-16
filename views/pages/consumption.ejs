@@ -14,9 +14,9 @@
     <div class="container">
       <h2>Sparade utfodringar</h2>
       <% if(consumptions.length > 0) {%>
-      <ul>
+      <ul class="list-group">
         <% consumptions.forEach(function(c) { %>
-        <li>Datum: <%= c.date.toISOString().split('T')[0] %> Djurgrupp: <%= c.animalGroup %><br />Fodertyp: <%= c.fodderType %> Mängd: <%= c.amount %> <%= c.unit %> Batch: <%= c.batch %></li>
+        <li class="list-group-item">Datum: <%= c.date.toISOString().split('T')[0] %> Djurgrupp: <%= c.animalGroup %><br />Fodertyp: <%= c.fodderType %> Mängd: <%= c.amount %> <%= c.unit %> Batch: <%= c.batch %></li>
         <% });%>
       </ul>
       <% } %>

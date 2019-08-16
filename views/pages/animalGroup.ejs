@@ -14,9 +14,9 @@
     <div class="container">
       <h2>Sparade djur och djurgrupper</h2>
       <% if(animalGroups.length > 0) {%>
-      <ul>
+      <ul class="list-group">
         <% animalGroups.forEach(function(animalGroup) { %>
-        <li>Namn: <%= animalGroup.name %><br />Antal djur: <%= animalGroup.amount %></li>
+        <li class="list-group-item">Namn: <%= animalGroup.name %><br />Antal djur: <%= animalGroup.amount %></li>
         <% });%>
       </ul>
       <% } %>
