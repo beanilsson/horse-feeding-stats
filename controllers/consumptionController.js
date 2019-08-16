@@ -22,11 +22,11 @@ router.get('/', (req, res) => {
         consumptions: (callback) => {
             Consumption.find((err, consumptions) => {
                 callback(err, consumptions);
-            });
+            }).sort({_id: 1}).limit(10);
         },
         batches: (callback)=> {
-            Batch.find((err, consumptions) => {
-                callback(err, consumptions);
+            Batch.find((err, batches) => {
+                callback(err, batches);
             });
         },
         animalGroups: (callback) => {
