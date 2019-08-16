@@ -7,6 +7,8 @@ const Batch = require('../models/batchModel');
 const Consumption = require('../models/consumptionModel');
 const AnimalGroup = require('../models/animalGroupModel');
 
+const fodderTypes = ['Hö', 'Mineralfoder', 'Halm', 'Lusern'];
+
 router.get('/', (req, res) => {
     async.parallel({
         batches: (callback) => {
@@ -58,6 +60,7 @@ router.get('/', (req, res) => {
                 }
             }, (err) => {
                 res.render('pages/batch', {
+                    fodderTypes: fodderTypes,
                     batches: results.batches,
                     errorMessage: null
                 });
@@ -68,7 +71,7 @@ router.get('/', (req, res) => {
 
 router.post('/', (req, res) => {
     const batchRefillable = req.body.batchRefillable === 'Ja' ? true : false;
-    const batch = new Batch({name: req.body.batchName, weight: req.body.batchWeight, refillable: batchRefillable});
+    const batch = new Batch({name: req.body.batchName, weight: req.body.batchWeight, refillable: batchRefillable, fodderType: req.body.batchFodderType});
     batch.save().then((err) => {
         res.render('pages/batchSaved');
     }, (err) => {

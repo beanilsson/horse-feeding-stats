@@ -39,13 +39,11 @@ router.get('/', (req, res) => {
                 res.render('pages/error');
             } else {
                 const units = ['kg', 'dl'];
-                const fodderTypes = ['Hö', 'Mineralfoder', 'Halm'];
 
                 res.render('pages/consumption', {
                     batches: result.batches,
                     consumptions: result.consumptions,
                     units: units,
-                    fodderTypes: fodderTypes,
                     animalGroups: result.animalGroups
                 });
             }
@@ -70,7 +68,7 @@ router.post('/', (req, res) => {
         };
 
         dates.forEach((date) => {
-            const consumption = new Consumption({date: date, amount: req.body.consumptionAmount, unit: req.body.consumptionUnit, fodderType: req.body.consumptionFodderType, batch: req.body.consumptionBatch, animalGroup: animalGroup});
+            const consumption = new Consumption({date: date, amount: req.body.consumptionAmount, unit: req.body.consumptionUnit, batch: req.body.consumptionBatch, animalGroup: animalGroup});
             consumption.save().then((err) => {
                 res.render('pages/consumptionSaved');
             }, (err) => {
