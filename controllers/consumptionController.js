@@ -26,7 +26,7 @@ router.get('/', (req, res) => {
         consumptions: (callback) => {
             Consumption.find((err, consumptions) => {
                 callback(err, consumptions);
-            }).sort({_id: 1}).limit(10);
+            }).sort({_id: -1}).limit(10);
         },
         batches: (callback)=> {
             Batch.find((err, batches) => {
