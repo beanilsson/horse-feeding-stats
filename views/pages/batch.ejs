@@ -28,7 +28,9 @@
             <br />
             Vikt (kg): <%= b.weight%>
             <br />
-            Kvar (kg): <%= b.left %>
+            Total schemalagd mängd (kg): <%= b.left %>
+            <br />
+            Förbrukad mängd (kg): <%= b.currentAmount %>
             <% if(b.refillable === true) {%>
             <form action="/batches/<%= b.name %>/<%= b.weight %>" method="post">
               <div class="form-group">

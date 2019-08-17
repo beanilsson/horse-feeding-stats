@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const async = require('async');
+const moment = require('moment');
+
 const uniqueError = require('../utils/uniqueError');
 
 const Batch = require('../models/batchModel');
@@ -34,6 +36,8 @@ router.get('/', (req, res) => {
             let left = null;
             let batchWeight = null;
             let animalGroup = null;
+            let currentAmount = null;
+            let today = moment();
 
             async.each(results.batches, (batch, callback) => {
                 batchWeight = batch.weight;
@@ -47,15 +51,32 @@ router.get('/', (req, res) => {
 
                         left = batchWeight -= (consumption.amount *= animalGroup.amount);
 
+                        if (moment(consumption.date) < today) {
+                            currentAmount = batchWeight -= (consumption.amount *= animalGroup.amount);
+                        }
+
                     }
                 });
 
                 if (left === null){
                     batch.left = batch.weight;
+
+                    if (currentAmount === null) {
+                        batch.currentAmount = batch.weight;
+                    } else {
+                        batch.currentAmount = batch.weight - currentAmount;
+                    }
+
                     callback();
                 } else {
                     batch.left = left;
+                    if (currentAmount === null) {
+                        batch.currentAmount = batch.weight;
+                    } else {
+                        batch.currentAmount = batch.weight - currentAmount;
+                    }
                     left = null;
+                    currentAmount = null;
                     callback();
                 }
             }, (err) => {
