@@ -8,13 +8,17 @@ const AnimalGroup = require('../models/animalGroupModel');
 
 const storeCheckboxValues = (values) => {
     let array = [];
-    if(typeof values != []) {
-        array.push(values);
-    } else {
-        array = values;
-    }
 
-    return array;
+    if (typeof values === 'string') {
+        array.push(values);
+        return array;
+    } else {
+        values.forEach((value) => {
+            array.push(value);
+        });
+
+        return array;
+    }
 };
 
 router.get('/', (req, res) => {
@@ -22,7 +26,7 @@ router.get('/', (req, res) => {
         consumptions: (callback) => {
             Consumption.find((err, consumptions) => {
                 callback(err, consumptions);
-            }).sort({_id: 1}).limit(10);
+            }).sort({_id: -1}).limit(10);
         },
         batches: (callback)=> {
             Batch.find((err, batches) => {
@@ -57,27 +61,30 @@ router.post('/', (req, res) => {
     let tempDate = null;
     let dates = [];
 
-    const animalGroups = storeCheckboxValues(req.body.consumptionAnimalGroup);
+    if (req.body.consumptionAnimalGroup === undefined) {
+        res.render('pages/consumptionAnimalGroupError');
+    } else {
+        const animalGroups = storeCheckboxValues(req.body.consumptionAnimalGroup);
+        animalGroups.forEach((animalGroup) => {
+            while(currentDate <= lastDate) {
+                dates.push(currentDate);
+                tempDate = new Date(currentDate);
+                tempDate.setDate(tempDate.getDate() + 1);
+                currentDate = tempDate;
+            };
 
-    animalGroups.forEach((animalGroup) => {
-        while(currentDate <= lastDate) {
-            dates.push(currentDate);
-            tempDate = new Date(currentDate);
-            tempDate.setDate(tempDate.getDate() + 1);
-            currentDate = tempDate;
-        };
-
-        dates.forEach((date) => {
-            const consumption = new Consumption({date: date, amount: req.body.consumptionAmount, unit: req.body.consumptionUnit, batch: req.body.consumptionBatch, animalGroup: animalGroup});
-            consumption.save().then((err) => {
-                res.render('pages/consumptionSaved');
-            }, (err) => {
-                console.log(err);
-                res.render('pages/error');
+            dates.forEach((date) => {
+                const consumption = new Consumption({date: date, amount: req.body.consumptionAmount, unit: req.body.consumptionUnit, batch: req.body.consumptionBatch, animalGroup: animalGroup});
+                consumption.save().then((err) => {
+                }, (err) => {
+                    console.log(err);
+                    res.render('pages/error');
+                    return;
+                });
             });
         });
-    });
-
+        res.render('pages/consumptionSaved');
+    }
 });
 
 module.exports = router;
