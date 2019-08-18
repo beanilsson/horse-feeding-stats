@@ -26,11 +26,11 @@
             <br />
             Fodertyp: <%= b.fodderType %>
             <br />
-            Vikt (kg): <%= b.weight%>
+            Orginalmängd (<%= b.unit %>): <%= b.weight%>
             <br />
-            Total schemalagd mängd (kg): <%= b.left %>
+            Schemalagd mängd (<%= b.unit %>): <%= b.left %>
             <br />
-            Förbrukad mängd (kg): <%= b.currentAmount %>
+            Förbrukad mängd (<%= b.unit %>): <%= b.currentAmount %>
             <% if(b.refillable === true) {%>
             <form action="/batches/<%= b.name %>/<%= b.weight %>" method="post">
               <div class="form-group">
@@ -62,7 +62,16 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="batchForm">Vikt (kg)</label>
+            <label for="consumptionForm">Enhet</label>
+            <div class="form-check">
+              <% units.forEach(function(u){%>
+              <input type="radio" value="<%= u %>" name="batchUnit" required>
+              <label class="form-check-label"> <%= u %></label>
+              <% }); %>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="batchForm">Mängd i vald enhet</label>
             <input type="number" class="form-control" id="batchFormWeight" name="batchWeight" required>
           </div>
           <div class="form-group">
