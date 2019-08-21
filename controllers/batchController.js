@@ -43,9 +43,12 @@ router.get('/', (req, res) => {
                 batch.consumedAmount = consumedAmount(batch, results.consumptions, results.animalGroups);
                 callback();
             }, (err) => {
+                const units = ['kg', 'dl'];
+
                 res.render('pages/batch', {
                     fodderTypes: fodderTypes,
                     batches: results.batches,
+                    units: units,
                     errorMessage: null
                 });
             });
@@ -55,7 +58,7 @@ router.get('/', (req, res) => {
 
 router.post('/', (req, res) => {
     const batchRefillable = req.body.batchRefillable === 'Ja' ? true : false;
-    const batch = new Batch({name: req.body.batchName, weight: req.body.batchWeight, refillable: batchRefillable, fodderType: req.body.batchFodderType});
+    const batch = new Batch({name: req.body.batchName, weight: req.body.batchWeight, refillable: batchRefillable, fodderType: req.body.batchFodderType, unit: req.body.batchUnit,});
     batch.save().then((err) => {
         res.render('pages/batchSaved');
     }, (err) => {

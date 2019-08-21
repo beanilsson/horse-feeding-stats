@@ -5,6 +5,7 @@ const batchSchema = new mongoose.Schema({
     name: {type: String, required: true, unique: true, index: true},
     weight: {type: Number, required: true},
     refillable: {type: Boolean, required: true},
+    unit: { type: String, required: true },
     fodderType: { type: String, required: true}
 });
 
