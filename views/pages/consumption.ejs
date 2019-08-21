@@ -12,22 +12,29 @@
         <h1>Utfodring</h1>
       </div>
       <div class="container">
-        <h2>Sparade utfodringar</h2>
-        <p>10 senast sparade</p>
-        <% if(consumptions.length > 0) {%>
-        <ul class="list-group">
-          <% consumptions.forEach(function(c) { %>
-          <li class="list-group-item">Datum: <%= c.date.toISOString().split('T')[0] %>
-            <br />
-            Djurgrupp: <%= c.animalGroup %>
-            <br />
-            Mängd: <%= c.amount %> <%= c.unit %>
-            <br />
-            Batch: <%= c.batch %>
-          </li>
-          <% });%>
-        </ul>
-        <% } %>
+        <p>
+          <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseSavedConsumptions" aria-expanded="false" aria-controls="collapseSavedConsumptions">
+            Visa sparade utfodringar
+          </button>
+        </p>
+        <div class="collapse" id="collapseSavedConsumptions">
+          <h2>Sparade utfodringar</h2>
+          <p>10 senast sparade</p>
+          <% if(consumptions.length > 0) {%>
+          <ul class="list-group">
+            <% consumptions.forEach(function(c) { %>
+            <li class="list-group-item">Datum: <%= c.date.toISOString().split('T')[0] %>
+              <br />
+              Djurgrupp: <%= c.animalGroup %>
+              <br />
+              Mängd: <%= c.amount %> <%= c.unit %>
+              <br />
+              Batch: <%= c.batch %>
+            </li>
+            <% });%>
+          </ul>
+          <% } %>
+        </div>
       </div>
       <div class="container">
         <h2>Lägg till ny utfodring</h2>
