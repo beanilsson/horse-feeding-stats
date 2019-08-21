@@ -37,48 +37,11 @@ router.get('/', (req, res) => {
             let batchWeight = null;
             let animalGroup = null;
             let currentAmount = null;
-            let today = moment();
 
             async.each(results.batches, (batch, callback) => {
-                batchWeight = batch.weight;
-
-                results.consumptions.forEach((consumption) => {
-                    if (batch.name === consumption.batch) {
-
-                        animalGroup = results.animalGroups.find((ag) => {
-                            return ag.name === consumption.animalGroup;
-                        });
-
-                        left = batchWeight -= (consumption.amount *= animalGroup.amount);
-
-                        if (moment(consumption.date) < today) {
-                            currentAmount = batchWeight -= (consumption.amount *= animalGroup.amount);
-                        }
-
-                    }
-                });
-
-                if (left === null){
-                    batch.left = batch.weight;
-
-                    if (currentAmount === null) {
-                        batch.currentAmount = batch.weight;
-                    } else {
-                        batch.currentAmount = batch.weight - currentAmount;
-                    }
-
-                    callback();
-                } else {
-                    batch.left = left;
-                    if (currentAmount === null) {
-                        batch.currentAmount = batch.weight;
-                    } else {
-                        batch.currentAmount = batch.weight - currentAmount;
-                    }
-                    left = null;
-                    currentAmount = null;
-                    callback();
-                }
+                batch.scheduledAmount = scheduledAmount(batch, results.consumptions, results.animalGroups);
+                batch.consumedAmount = consumedAmount(batch, results.consumptions, results.animalGroups);
+                callback();
             }, (err) => {
                 res.render('pages/batch', {
                     fodderTypes: fodderTypes,
@@ -133,5 +96,47 @@ router.post('/:batchName/:batchWeight', (req, res) => {
     });
 
 });
+
+const scheduledAmount = (batch, consumptions, animalGroups) => {
+    let animalGroup = {};
+    let amount = 0;
+    let batchWeight = batch.weight;
+
+    async.each(consumptions, (consumption) => {
+        if (batch.name === consumption.batch) {
+
+            animalGroup = animalGroups.find((ag) => {
+                return ag.name === consumption.animalGroup;
+            });
+
+            amount = batchWeight -= (consumption.amount * animalGroup.amount);
+        }
+    });
+
+    return amount;
+};
+
+const consumedAmount = (batch, consumptions, animalGroups) => {
+    let animalGroup = {};
+    let amount = 0;
+    let batchWeight = batch.weight;
+    let today = moment();
+
+    async.each(consumptions, (consumption) => {
+        if (moment(consumption.date) < today) {
+            if (batch.name === consumption.batch) {
+
+                animalGroup = animalGroups.find((ag) => {
+                    return ag.name === consumption.animalGroup;
+                });
+
+
+                amount = batchWeight -= (consumption.amount * animalGroup.amount);
+            }
+        }
+    });
+
+    return amount;
+};
 
 module.exports = router;
