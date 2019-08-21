@@ -42,12 +42,9 @@ router.get('/', (req, res) => {
                 console.log(err);
                 res.render('pages/error');
             } else {
-                const units = ['kg', 'dl'];
-
                 res.render('pages/consumption', {
                     batches: result.batches,
                     consumptions: result.consumptions,
-                    units: units,
                     animalGroups: result.animalGroups
                 });
             }
@@ -74,7 +71,7 @@ router.post('/', (req, res) => {
             };
 
             dates.forEach((date) => {
-                const consumption = new Consumption({date: date, amount: req.body.consumptionAmount, unit: req.body.consumptionUnit, batch: req.body.consumptionBatch, animalGroup: animalGroup});
+                const consumption = new Consumption({date: date, amount: req.body.consumptionAmount, batch: req.body.consumptionBatch, animalGroup: animalGroup});
                 consumption.save().then((err) => {
                 }, (err) => {
                     console.log(err);

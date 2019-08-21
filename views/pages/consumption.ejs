@@ -21,7 +21,7 @@
             <br />
             Djurgrupp: <%= c.animalGroup %>
             <br />
-            Mängd: <%= c.amount %> <%= c.unit %>
+            Mängd: <%= c.amount %> (kg/dl)
             <br />
             Batch: <%= c.batch %>
           </li>
@@ -43,15 +43,6 @@
           <div class="form-group">
             <label for="consumptionForm">Mängd (per dag)</label>
             <input type="number" class="form-control" id="consumptionFormAmount" name="consumptionAmount" step=".01" required>
-          </div>
-          <div class="form-group">
-            <label for="consumptionForm">Enhet</label>
-            <div class="form-check">
-              <% units.forEach(function(u){%>
-              <input type="radio" value="<%= u %>" name="consumptionUnit" required>
-              <label class="form-check-label"> <%= u %></label>
-              <% }); %>
-            </div>
           </div>
           <div class="form-group">
             <label for="consumptionForm">Batch</label>

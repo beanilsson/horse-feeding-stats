@@ -1,3 +1,5 @@
+//fails on validation error
+
 const check = (error) => {
     if (error.errors.name.kind === 'unique') {
         return true;
