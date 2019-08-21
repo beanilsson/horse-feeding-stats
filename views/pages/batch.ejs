@@ -26,11 +26,11 @@
             <br />
             Fodertyp: <%= b.fodderType %>
             <br />
-            Orginalmängd (kg/dl): <%= b.weight%>
+            Orginalmängd: <%= b.weight%> <%= b.unit%>
             <br />
-            Schemalagd mängd (kg/dl): <%= b.scheduledAmount %>
+            Schemalagd mängd: <%= b.scheduledAmount %> <%= b.unit%>
             <br />
-            Förbrukad mängd (kg/dl): <%= b.consumedAmount %>
+            Förbrukad mängd: <%= b.consumedAmount %> <%= b.unit%>
             <% if(b.refillable === true) {%>
             <form action="/batches/<%= b.name %>/<%= b.weight %>" method="post">
               <div class="form-group">
