@@ -42,10 +42,21 @@ router.get('/', (req, res) => {
                 console.log(err);
                 res.render('pages/error');
             } else {
-                res.render('pages/consumption', {
-                    batches: result.batches,
-                    consumptions: result.consumptions,
-                    animalGroups: result.animalGroups
+                let batch = {};
+
+                async.each(result.consumptions, (consumption, callback) => {
+                    batch = result.batches.find((batch) => {
+                        return batch.name === consumption.batch;
+                    });
+
+                    consumption.unit = batch.unit;
+                    callback();
+                }, (err) => {
+                    res.render('pages/consumption', {
+                        batches: result.batches,
+                        consumptions: result.consumptions,
+                        animalGroups: result.animalGroups
+                    });
                 });
             }
         });
