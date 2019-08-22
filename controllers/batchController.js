@@ -31,7 +31,9 @@ router.get('/', (req, res) => {
     }, (err, results) => {
         if (err) {
             console.log(err);
-            res.render('pages/errors/error');
+            res.render('pages/errors/error', {
+                message: 'Kunde inte hämta foderbatchar.'
+            });
         } else {
             let left = null;
             let batchWeight = null;
@@ -42,7 +44,7 @@ router.get('/', (req, res) => {
                 batch.scheduledAmount = scheduledAmount(batch, results.consumptions, results.animalGroups);
                 batch.consumedAmount = consumedAmount(batch, results.consumptions, results.animalGroups);
                 callback();
-            }, (err) => {
+            }, () => {
                 const units = ['kg', 'dl'];
 
                 res.render('pages/batches/batch', {
@@ -62,24 +64,31 @@ router.post('/', (req, res) => {
     batch.save().then((err) => {
         res.render('pages/batches/batchSaved');
     }, (err) => {
-        let errorMessage = '';
-        if (uniqueError.check(err) === true) {
-            errorMessage = uniqueError.createMessage('batch', err);
+        if(err) {
+            console.log(err);
+            res.render('pages/errors/error', {
+                message: 'Kunde inte spara foderbatch.'
+            });
         } else {
-            errorMessage = 'Ett oväntat fel uppstod';
-        }
-
-        Batch.find((err, batches) => {
-            if (err) {
-                console.log(err);
-                res.sendStatus(500);
+            let errorMessage = '';
+            if (uniqueError.check(err) === true) {
+                errorMessage = uniqueError.createMessage('batch', err);
             } else {
-                res.render('pages/batches/batch', {
-                    batches: batches,
-                    errorMessage: errorMessage
-                });
+                errorMessage = 'Ett oväntat fel uppstod';
             }
-        });
+
+            Batch.find((err, batches) => {
+                if (err) {
+                    console.log(err);
+                    res.sendStatus(500);
+                } else {
+                    res.render('pages/batches/batch', {
+                        batches: batches,
+                        errorMessage: errorMessage
+                    });
+                }
+            });
+        }
     });
 });
 
@@ -98,7 +107,9 @@ router.post('/delete/:batchName', (req, res) => {
     ], (err) => {
         if(err) {
             console.log(err);
-            res.sendStatus(500);
+            res.render('pages/errors/error', {
+                message: 'Kunde inte ta bort foderbatch.'
+            });
         } else {
             res.render('pages/batches/batchDeleted.ejs');
         }
@@ -114,7 +125,9 @@ router.post('/:batchName/:batchWeight', (req, res) => {
     Batch.updateOne({name: batchName}, {weight: newAmount}, {upsert: true}, (err) => {
         if (err) {
             console.log(err);
-            res.sendStatus(500);
+            res.render('pages/errors/error', {
+                message: 'Kunde inte fylla på foderbatch.'
+            });
         } else {
             res.render('pages/batches/batchRefilled');
         }

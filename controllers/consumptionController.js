@@ -40,7 +40,9 @@ router.get('/', (req, res) => {
         }}, (err, result) => {
             if (err) {
                 console.log(err);
-                res.render('pages/errors/error');
+                res.render('pages/errors/error', {
+                    message: 'Kunde inte hämta utfodringar.'
+                });
             } else {
                 let batch = {};
 
@@ -52,11 +54,18 @@ router.get('/', (req, res) => {
                     consumption.unit = batch.unit;
                     callback();
                 }, (err) => {
-                    res.render('pages/consumptions/consumption', {
-                        batches: result.batches,
-                        consumptions: result.consumptions,
-                        animalGroups: result.animalGroups
-                    });
+                    if (err) {
+                        console.log(err);
+                        res.render('pages/errors/error', {
+                            message: 'Kunde inte hämta utfodringar.'
+                        });
+                    } else {
+                        res.render('pages/consumptions/consumption', {
+                            batches: result.batches,
+                            consumptions: result.consumptions,
+                            animalGroups: result.animalGroups
+                        });
+                    }
                 });
             }
         });
@@ -73,6 +82,7 @@ router.post('/', (req, res) => {
         res.render('pages/consumptions/consumptionAnimalGroupError');
     } else {
         const animalGroups = storeCheckboxValues(req.body.consumptionAnimalGroup);
+
         animalGroups.forEach((animalGroup) => {
             while(currentDate <= lastDate) {
                 dates.push(currentDate);
@@ -85,9 +95,12 @@ router.post('/', (req, res) => {
                 const consumption = new Consumption({date: date, amount: req.body.consumptionAmount, batch: req.body.consumptionBatch, animalGroup: animalGroup});
                 consumption.save().then((err) => {
                 }, (err) => {
-                    console.log(err);
-                    res.render('pages/errors/error');
-                    return;
+                    if (err) {
+                        console.log(err);
+                        res.render('pages/errors/error', {
+                            message: 'Kunde inte spara utfodringar.'
+                        });
+                    }
                 });
             });
         });
@@ -99,7 +112,9 @@ router.post('/delete/:id', (req, res) => {
     Consumption.deleteOne({_id: req.params.id}, (err) => {
         if (err) {
             console.log(err);
-            res.render('pages/errors/error');
+            res.render('pages/errors/error', {
+                message: 'Kunde inte ta bort utfodring.'
+            });
             return;
         } else {
             res.render('pages/consumptions/consumptionDeleted');
