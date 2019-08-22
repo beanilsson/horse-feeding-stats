@@ -42,7 +42,8 @@ router.get('/', (req, res) => {
             if (err) {
                 console.log(err);
                 res.render('pages/errors/error', {
-                    message: 'Kunde inte hämta utfodringar.'
+                    message: 'Kunde inte hämta utfodringar.',
+                    route: 'consumptions'
                 });
             } else {
                 let batch = {};
@@ -58,7 +59,8 @@ router.get('/', (req, res) => {
                     if (err) {
                         console.log(err);
                         res.render('pages/errors/error', {
-                            message: 'Kunde inte hämta utfodringar.'
+                            message: 'Kunde inte hämta utfodringar.',
+                            route: 'consumptions'
                         });
                     } else {
                         res.render('pages/consumptions/consumption', {
@@ -106,7 +108,8 @@ router.post('/', (req, res) => {
                     if (err) {
                         console.log(err);
                         res.render('pages/errors/error', {
-                            message: 'Kunde inte spara utfodringar.'
+                            message: 'Kunde inte spara utfodringar.',
+                            route: 'consumptions'
                         });
                     }
                 });
@@ -121,7 +124,8 @@ router.post('/delete/:id', (req, res) => {
         if (err) {
             console.log(err);
             res.render('pages/errors/error', {
-                message: 'Kunde inte ta bort utfodring.'
+                message: 'Kunde inte ta bort utfodring.',
+                route: 'consumptions'
             });
             return;
         } else {

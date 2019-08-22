@@ -32,7 +32,8 @@ router.get('/', (req, res) => {
         if (err) {
             console.log(err);
             res.render('pages/errors/error', {
-                message: 'Kunde inte hämta foderbatchar.'
+                message: 'Kunde inte hämta foderbatchar.',
+                route: 'batches'
             });
         } else {
             let left = null;
@@ -67,7 +68,8 @@ router.post('/', (req, res) => {
         if(err) {
             console.log(err);
             res.render('pages/errors/error', {
-                message: 'Kunde inte spara foderbatch.'
+                message: 'Kunde inte spara foderbatch.',
+                route: 'batches'
             });
         } else {
             let errorMessage = '';
@@ -108,7 +110,8 @@ router.post('/delete/:batchName', (req, res) => {
         if(err) {
             console.log(err);
             res.render('pages/errors/error', {
-                message: 'Kunde inte ta bort foderbatch.'
+                message: 'Kunde inte ta bort foderbatch.',
+                route: 'batches'
             });
         } else {
             res.render('pages/batches/batchDeleted.ejs');
@@ -126,7 +129,8 @@ router.post('/:batchName/:batchWeight', (req, res) => {
         if (err) {
             console.log(err);
             res.render('pages/errors/error', {
-                message: 'Kunde inte fylla på foderbatch.'
+                message: 'Kunde inte fylla på foderbatch.',
+                route: 'batches'
             });
         } else {
             res.render('pages/batches/batchRefilled');
