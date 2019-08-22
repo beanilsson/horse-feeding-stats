@@ -10,7 +10,8 @@ router.get('/', (req, res) => {
         if (err) {
             console.log(err);
             res.render('pages/errors/error', {
-                message: 'Kunde inte hämta djur/djurgrupper.'
+                message: 'Kunde inte hämta djur/djurgrupper.',
+                route: 'animalGroups'
             });
         } else {
             res.render('pages/animalGroups/animalGroup', {
@@ -27,7 +28,8 @@ router.post('/', (req, res) => {
     }, (err) => {
         console.log(err);
         res.render('pages/errors/error', {
-            message: 'Kunde inte spara djur/djurgrupper.'
+            message: 'Kunde inte spara djur/djurgrupper.',
+            route: 'animalGroups'
         });
     });
 });
@@ -50,7 +52,8 @@ router.post('/delete/:animalGroupName', (req, res) => {
         if (err) {
             console.log(err);
             res.render('pages/errors/error', {
-                message: 'Kunde inte ta bort djur/djurgrupper.'
+                message: 'Kunde inte ta bort djur/djurgrupper.',
+                route: 'animalGroups'
             });
         } else {
             res.render('pages/animalGroups/animalGroupDeleted');

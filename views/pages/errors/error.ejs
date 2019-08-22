@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="sv">
-<head>
-  <% include ../partials/head %>
-</head>
-<body class="container">
-  <header>
-    <% include ../partials/header %>
-  </header>
-  <main>
-    <div role="alert" class="alert alert-danger">Något gick fel. <%= message %></div>
-  </main>
-</body>
+  <head>
+    <% include ../../partials/head %>
+  </head>
+  <body class="container">
+    <header>
+      <% include ../../partials/header %>
+    </header>
+    <main>
+      <div role="alert" class="alert alert-danger">Något gick fel. <%= message %></div>
+      <form action="/<%= route %>" method="get">
+        <button type="submit" class="btn btn-primary">Tillbaka</button>
+      </form>
+    </main>
+  </body>
 </html>

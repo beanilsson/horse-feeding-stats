@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const async = require('async');
+const moment = require('moment');
 
 const Batch = require('../models/batchModel');
 const Consumption = require('../models/consumptionModel');
@@ -41,7 +42,8 @@ router.get('/', (req, res) => {
             if (err) {
                 console.log(err);
                 res.render('pages/errors/error', {
-                    message: 'Kunde inte hämta utfodringar.'
+                    message: 'Kunde inte hämta utfodringar.',
+                    route: 'consumptions'
                 });
             } else {
                 let batch = {};
@@ -57,7 +59,8 @@ router.get('/', (req, res) => {
                     if (err) {
                         console.log(err);
                         res.render('pages/errors/error', {
-                            message: 'Kunde inte hämta utfodringar.'
+                            message: 'Kunde inte hämta utfodringar.',
+                            route: 'consumptions'
                         });
                     } else {
                         res.render('pages/consumptions/consumption', {
@@ -72,6 +75,13 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', (req, res) => {
+    if (moment(req.body.consumptionDateFirst) > moment(req.body.consumptionDateLast)) {
+        res.render('pages/errors/error', {
+            message: 'Startdatum måste vara före slutdatum.',
+            route: 'consumptions'
+        });
+    }
+
     const firstDate = new Date(req.body.consumptionDateFirst);
     const lastDate = new Date(req.body.consumptionDateLast);
     let currentDate = firstDate;
@@ -98,7 +108,8 @@ router.post('/', (req, res) => {
                     if (err) {
                         console.log(err);
                         res.render('pages/errors/error', {
-                            message: 'Kunde inte spara utfodringar.'
+                            message: 'Kunde inte spara utfodringar.',
+                            route: 'consumptions'
                         });
                     }
                 });
@@ -113,7 +124,8 @@ router.post('/delete/:id', (req, res) => {
         if (err) {
             console.log(err);
             res.render('pages/errors/error', {
-                message: 'Kunde inte ta bort utfodring.'
+                message: 'Kunde inte ta bort utfodring.',
+                route: 'consumptions'
             });
             return;
         } else {
