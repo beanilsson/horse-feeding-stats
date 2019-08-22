@@ -95,4 +95,16 @@ router.post('/', (req, res) => {
     }
 });
 
+router.post('/delete/:id', (req, res) => {
+    Consumption.deleteOne({_id: req.params.id}, (err) => {
+        if (err) {
+            console.log(err);
+            res.render('pages/error');
+            return;
+        } else {
+            res.render('pages/consumptionDeleted');
+        }
+    });
+});
+
 module.exports = router;

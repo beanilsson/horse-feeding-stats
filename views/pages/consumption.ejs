@@ -22,7 +22,7 @@
           <p>10 senast sparade</p>
           <% if(consumptions.length > 0) {%>
           <ul class="list-group">
-            <% consumptions.forEach(function(c) { %>
+            <% consumptions.forEach(function(c, i) { %>
             <li class="list-group-item">Datum: <%= c.date.toISOString().split('T')[0] %>
               <br />
               Djurgrupp: <%= c.animalGroup %>
@@ -30,6 +30,32 @@
               Mängd: <%= c.amount %> <%= c.unit %>
               <br />
               Batch: <%= c.batch %>
+              <br />
+              <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConsumptionModal<%= i %>">
+                Ta bort
+              </button>
+              <!--- Ta bort-bekräftelse modal -->
+              <div class="modal fade" id="deleteConsumptionModal<%= i %>" tabindex="-1" role="dialog" aria-labelledby="deleteConsumptionModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="deleteConsumptionTitle">Ta bort utfodring</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      Är du säker på att du vill ta bort <%= consumptions[i].animalGroup %>s utfodring den <%= consumptions[i].date.toISOString().split('T')[0] %>? Det går inte att ångra
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Stäng</button>
+                      <form action="/consumptions/delete/<%= consumptions[i]._id %>" method="post">
+                        <button type="submit" class="btn btn-danger" value="accept">Ta bort</button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </li>
             <% });%>
           </ul>
