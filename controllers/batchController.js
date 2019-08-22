@@ -31,7 +31,7 @@ router.get('/', (req, res) => {
     }, (err, results) => {
         if (err) {
             console.log(err);
-            res.render('pages/error');
+            res.render('pages/errors/error');
         } else {
             let left = null;
             let batchWeight = null;
@@ -45,7 +45,7 @@ router.get('/', (req, res) => {
             }, (err) => {
                 const units = ['kg', 'dl'];
 
-                res.render('pages/batch', {
+                res.render('pages/batches/batch', {
                     fodderTypes: fodderTypes,
                     batches: results.batches,
                     units: units,
@@ -60,7 +60,7 @@ router.post('/', (req, res) => {
     const batchRefillable = req.body.batchRefillable === 'Ja' ? true : false;
     const batch = new Batch({name: req.body.batchName, weight: req.body.batchWeight, refillable: batchRefillable, fodderType: req.body.batchFodderType, unit: req.body.batchUnit,});
     batch.save().then((err) => {
-        res.render('pages/batchSaved');
+        res.render('pages/batches/batchSaved');
     }, (err) => {
         let errorMessage = '';
         if (uniqueError.check(err) === true) {
@@ -74,7 +74,7 @@ router.post('/', (req, res) => {
                 console.log(err);
                 res.sendStatus(500);
             } else {
-                res.render('pages/batch', {
+                res.render('pages/batches/batch', {
                     batches: batches,
                     errorMessage: errorMessage
                 });
@@ -100,7 +100,7 @@ router.post('/delete/:batchName', (req, res) => {
             console.log(err);
             res.sendStatus(500);
         } else {
-            res.render('pages/batchDeleted.ejs');
+            res.render('pages/batches/batchDeleted.ejs');
         }
     });
 });
@@ -116,7 +116,7 @@ router.post('/:batchName/:batchWeight', (req, res) => {
             console.log(err);
             res.sendStatus(500);
         } else {
-            res.render('pages/batchRefilled');
+            res.render('pages/batches/batchRefilled');
         }
     });
 

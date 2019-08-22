@@ -9,9 +9,9 @@ router.get('/', (req, res) => {
     AnimalGroup.find((err, animalGroups) => {
         if (err) {
             console.log(err);
-            res.render('pages/error');
+            res.render('pages/errors/error');
         } else {
-            res.render('pages/animalGroup', {
+            res.render('pages/animalGroups/animalGroup', {
                 animalGroups: animalGroups
             });
         }
@@ -21,7 +21,7 @@ router.get('/', (req, res) => {
 router.post('/', (req, res) => {
     const animalGroup = new AnimalGroup({name: req.body.animalGroupName, amount: req.body.animalGroupAmount});
     animalGroup.save().then((err) => {
-        res.render('pages/animalGroupSaved');
+        res.render('pages/animalGroups/animalGroupSaved');
     }, (err) => {
         console.log(err);
         res.sendStatus(500);
@@ -47,7 +47,7 @@ router.post('/delete/:animalGroupName', (req, res) => {
             console.log(err);
             res.sendStatus(500);
         } else {
-            res.render('pages/animalGroupDeleted');
+            res.render('pages/animalGroups/animalGroupDeleted');
         }
     });
 
