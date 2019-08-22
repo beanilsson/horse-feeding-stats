@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const async = require('async');
+const moment = require('moment');
 
 const Batch = require('../models/batchModel');
 const Consumption = require('../models/consumptionModel');
@@ -72,6 +73,13 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', (req, res) => {
+    if (moment(req.body.consumptionDateFirst) > moment(req.body.consumptionDateLast)) {
+        res.render('pages/errors/error', {
+            message: 'Startdatum måste vara före slutdatum.',
+            route: 'consumptions'
+        });
+    }
+
     const firstDate = new Date(req.body.consumptionDateFirst);
     const lastDate = new Date(req.body.consumptionDateLast);
     let currentDate = firstDate;
