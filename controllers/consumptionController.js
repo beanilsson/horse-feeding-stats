@@ -40,7 +40,7 @@ router.get('/', (req, res) => {
         }}, (err, result) => {
             if (err) {
                 console.log(err);
-                res.render('pages/error');
+                res.render('pages/errors/error');
             } else {
                 let batch = {};
 
@@ -52,7 +52,7 @@ router.get('/', (req, res) => {
                     consumption.unit = batch.unit;
                     callback();
                 }, (err) => {
-                    res.render('pages/consumption', {
+                    res.render('pages/consumptions/consumption', {
                         batches: result.batches,
                         consumptions: result.consumptions,
                         animalGroups: result.animalGroups
@@ -70,7 +70,7 @@ router.post('/', (req, res) => {
     let dates = [];
 
     if (req.body.consumptionAnimalGroup === undefined) {
-        res.render('pages/consumptionAnimalGroupError');
+        res.render('pages/consumptions/consumptionAnimalGroupError');
     } else {
         const animalGroups = storeCheckboxValues(req.body.consumptionAnimalGroup);
         animalGroups.forEach((animalGroup) => {
@@ -86,12 +86,12 @@ router.post('/', (req, res) => {
                 consumption.save().then((err) => {
                 }, (err) => {
                     console.log(err);
-                    res.render('pages/error');
+                    res.render('pages/errors/error');
                     return;
                 });
             });
         });
-        res.render('pages/consumptionSaved');
+        res.render('pages/consumptions/consumptionSaved');
     }
 });
 
@@ -99,10 +99,10 @@ router.post('/delete/:id', (req, res) => {
     Consumption.deleteOne({_id: req.params.id}, (err) => {
         if (err) {
             console.log(err);
-            res.render('pages/error');
+            res.render('pages/errors/error');
             return;
         } else {
-            res.render('pages/consumptionDeleted');
+            res.render('pages/consumptions/consumptionDeleted');
         }
     });
 });
