@@ -83,6 +83,28 @@ router.post('/', (req, res) => {
     });
 });
 
+router.post('/delete/:batchName', (req, res) => {
+    async.parallel([
+        (callback) => {
+            Batch.deleteOne({name: req.params.batchName}, (err) => {
+                callback(err);
+            });
+        },
+        (callback) => {
+            Consumption.deleteMany({batch: req.params.batchName}, (err) => {
+                callback(err);
+            });
+        }
+    ], (err) => {
+        if(err) {
+            console.log(err);
+            res.sendStatus(500);
+        } else {
+            res.render('pages/batchDeleted.ejs');
+        }
+    });
+});
+
 router.post('/:batchName/:batchWeight', (req, res) => {
     const batchName = req.params.batchName;
     const previousWeight = parseFloat(req.params.batchWeight);

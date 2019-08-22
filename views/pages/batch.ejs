@@ -20,7 +20,7 @@
         <h2>Sparade batchar</h2>
         <% if(batches.length > 0) {%>
         <ul class="list-group">
-          <% batches.forEach(function(b) { %>
+          <% batches.forEach(function(b, i) { %>
           <li class="list-group-item">
             Namn: <%= b.name %>
             <br />
@@ -40,6 +40,32 @@
               <button type="submit" class="btn btn-primary" value="accept">Fyll på</button>
             </form>
             <%  }%>
+            <br />
+            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteBatchModal<%= i %>">
+              Ta bort
+            </button>
+            <!--- Ta bort-bekräftelse modal -->
+            <div class="modal fade" id="deleteBatchModal<%= i %>" tabindex="-1" role="dialog" aria-labelledby="deleteBatchModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="deleteBatchTitle">Ta bort <%= batches[i].name %></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    Är du säker på att du vill ta bort <%= batches[i].name %>? Det går inte att ångra. Alla utfodringar relaterade till <%= batches[i].name %> kommer också att tas bort.
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Stäng</button>
+                    <form action="/batches/delete/<%= batches[i].name %>" method="post">
+                      <button type="submit" class="btn btn-danger" value="accept">Ta bort</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
           </li>
           <% })%>
         </ul>
