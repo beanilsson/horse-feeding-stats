@@ -9,7 +9,9 @@ router.get('/', (req, res) => {
     AnimalGroup.find((err, animalGroups) => {
         if (err) {
             console.log(err);
-            res.render('pages/errors/error');
+            res.render('pages/errors/error', {
+                message: 'Kunde inte hämta djur/djurgrupper.'
+            });
         } else {
             res.render('pages/animalGroups/animalGroup', {
                 animalGroups: animalGroups
@@ -24,7 +26,9 @@ router.post('/', (req, res) => {
         res.render('pages/animalGroups/animalGroupSaved');
     }, (err) => {
         console.log(err);
-        res.sendStatus(500);
+        res.render('pages/errors/error', {
+            message: 'Kunde inte spara djur/djurgrupper.'
+        });
     });
 });
 
@@ -45,7 +49,9 @@ router.post('/delete/:animalGroupName', (req, res) => {
     ], (err) => {
         if (err) {
             console.log(err);
-            res.sendStatus(500);
+            res.render('pages/errors/error', {
+                message: 'Kunde inte ta bort djur/djurgrupper.'
+            });
         } else {
             res.render('pages/animalGroups/animalGroupDeleted');
         }
