@@ -42,8 +42,8 @@ router.get('/', (req, res) => {
             let currentAmount = null;
 
             async.each(results.batches, (batch, callback) => {
-                batch.scheduledAmount = scheduledAmount(batch, results.consumptions, results.animalGroups);
-                batch.consumedAmount = consumedAmount(batch, results.consumptions, results.animalGroups);
+                batch.scheduledAmount = batch.weight - scheduledAmount(batch, results.consumptions, results.animalGroups);
+                batch.consumedAmount = batch.weight - consumedAmount(batch, results.consumptions, results.animalGroups);
                 callback();
             }, () => {
                 const units = ['kg', 'dl'];
