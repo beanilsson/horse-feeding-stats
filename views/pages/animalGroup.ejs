@@ -35,11 +35,11 @@
                     </button>
                   </div>
                   <div class="modal-body">
-                    Är du säker på att du vill ta bort <%= animalGroups[i].name %>? Det går inte att ångra. Allt foder som förbrukats av <%= animalGroup.name %> kommer fortfarande att räknas bort.
+                    Är du säker på att du vill ta bort <%= animalGroups[i].name %>? Det går inte att ångra. Allt foder som förbrukats av <%= animalGroup.name %> kommer att återställas.
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Stäng</button>
-                    <form action="/animalGroups/<%= animalGroup.name %>" method="post">
+                    <form action="/animalGroups/delete/<%= animalGroup.name %>" method="post">
                       <button type="submit" class="btn btn-danger" value="accept">Ta bort</button>
                       </form>
                   </div>

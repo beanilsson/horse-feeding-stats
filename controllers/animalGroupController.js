@@ -1,10 +1,12 @@
 const express = require('express');
 const router = express.Router();
+const async = require('async');
 
 const AnimalGroup = require('../models/animalGroupModel');
+const Consumption = require('../models/consumptionModel');
 
 router.get('/', (req, res) => {
-    AnimalGroup.find({deleted: false}, (err, animalGroups) => {
+    AnimalGroup.find((err, animalGroups) => {
         if (err) {
             console.log(err);
             res.render('pages/error');
@@ -26,10 +28,21 @@ router.post('/', (req, res) => {
     });
 });
 
-router.post('/:animalGroupName', (req, res) => {
+router.post('/delete/:animalGroupName', (req, res) => {
     const animalGroupName = req.params.animalGroupName;
 
-    AnimalGroup.updateOne({name: animalGroupName}, {deleted: true}, (err) => {
+    async.parallel([
+        (callback) => {
+            AnimalGroup.deleteOne({name: animalGroupName}, (err) => {
+                callback();
+            });
+        },
+        (callback) => {
+            Consumption.deleteMany({animalGroup: animalGroupName}, (err) => {
+                callback();
+            });
+        }
+    ], (err) => {
         if (err) {
             console.log(err);
             res.sendStatus(500);
@@ -37,6 +50,7 @@ router.post('/:animalGroupName', (req, res) => {
             res.render('pages/animalGroupDeleted');
         }
     });
+
 });
 
 module.exports = router;
