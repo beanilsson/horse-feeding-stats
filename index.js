@@ -4,6 +4,8 @@ const app = express();
 const mongoose = require('mongoose');
 const async = require('async');
 const bodyParser = require('body-parser');
+const helmet = require('helmet');
+app.use(helmet()); //It's best to use Helmet early in your middleware stack so that its headers are sure to be set
 
 const batches = require('./controllers/batchController');
 const consumptions = require('./controllers/consumptionController');
@@ -40,7 +42,11 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
-    res.render('pages/loginPage');
+    if (!req.session.userName) {
+        res.render('pages/loginPage');
+    } else {
+        res.redirect('/start');
+    }
 });
 
 app.use('/start', authCheck, (req, res) => {
@@ -71,7 +77,9 @@ app.post('/logout', function (req, res) {
     res.redirect('/loginPage');
 });
 
-mongoose.connect(dbUrl, {useNewUrlParser: true});
+mongoose.connect(dbUrl, {useNewUrlParser: true}).catch(error => {
+    console.log(error);
+});
 
 app.listen(port, host, () => {
     console.log(`Server running at ${host}:${port}`);

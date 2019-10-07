@@ -1,14 +1,15 @@
 {
     "name": "horse-feeding-stats",
-    "version": "0.0.1",
+    "version": "1.0.0",
     "description": "Horse food batch statistics",
     "main": "index.js",
     "scripts": {
         "test": "node_modules/jasmine/bin/jasmine.js",
         "devStart": "nodemon ./index.js",
-        "start": "node index.js"
+        "start": "node index.js",
+        "build": "node scripts/build.js"
     },
-    "author": "",
+    "author": "beanilsson",
     "license": "GPL-3.0",
     "dependencies": {
         "async": "^3.1.0",
@@ -17,6 +18,7 @@
         "ejs": "^2.6.2",
         "express": "^4.17.1",
         "express-session": "^1.16.2",
+        "helmet": "^3.21.1",
         "moment": "^2.24.0",
         "mongodb": "^3.3.0-beta2",
         "mongoose": "^5.6.7",
