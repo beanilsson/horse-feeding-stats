@@ -10,9 +10,16 @@ Node and mongodb is required
 
 ## Run
 `npm start` - Starts a node wrapper
+
 `npm devStart` - Starts a nodemon wrapper
+
+Browse to `localhost:3000`
 
 ## Tests
 `npm test`
 
-Browse to `localhost:3000`
+## Authentication
+Username and password for access to the system is set in .env
+
+## templateDotEnv
+Use this file as a template for your .env needs
