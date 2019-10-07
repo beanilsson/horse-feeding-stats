@@ -42,9 +42,9 @@ router.get('/', (req, res) => {
             let currentAmount = null;
 
             async.each(results.batches, (batch, callback) => {
-                batch.scheduledAmount = batch.weight - scheduledAmount(batch, results.consumptions, results.animalGroups);
-                batch.consumedAmount = batch.weight - consumedAmount(batch, results.consumptions, results.animalGroups);
-                callback();
+                    batch.scheduledAmount = scheduledAmount(batch.name, results.consumptions, results.animalGroups);
+                    batch.consumedAmount = consumedAmount(batch.name, results.consumptions, results.animalGroups);
+                    callback();
             }, () => {
                 const units = ['kg', 'dl'];
 
@@ -61,7 +61,8 @@ router.get('/', (req, res) => {
 
 router.post('/', (req, res) => {
     const batchRefillable = req.body.batchRefillable === 'Ja' ? true : false;
-    const batch = new Batch({name: req.body.batchName, weight: req.body.batchWeight, refillable: batchRefillable, fodderType: req.body.batchFodderType, unit: req.body.batchUnit,});
+    const batchUnknownAmount = req.body.batchUnknownAmount === 'Ja' ? true : false;
+    const batch = new Batch({name: req.body.batchName, weight: req.body.batchWeight, refillable: batchRefillable, fodderType: req.body.batchFodderType, unit: req.body.batchUnit, unknownAmount: batchUnknownAmount});
     batch.save().then((err) => {
         res.render('pages/batches/batchSaved');
     }, (err) => {
@@ -139,41 +140,34 @@ router.post('/:batchName/:batchWeight', (req, res) => {
 
 });
 
-const scheduledAmount = (batch, consumptions, animalGroups) => {
+const scheduledAmount = (batchName, consumptions, animalGroups) => {
     let animalGroup = {};
     let amount = 0;
-    let batchWeight = batch.weight;
 
     async.each(consumptions, (consumption) => {
-        if (batch.name === consumption.batch) {
-
+        if (batchName === consumption.batch) {
             animalGroup = animalGroups.find((ag) => {
                 return ag.name === consumption.animalGroup;
             });
-
-            amount = batchWeight -= (consumption.amount * animalGroup.amount);
+            amount += (consumption.amount * animalGroup.amount);
         }
     });
 
     return amount;
 };
 
-const consumedAmount = (batch, consumptions, animalGroups) => {
+const consumedAmount = (batchName, consumptions, animalGroups) => {
     let animalGroup = {};
     let amount = 0;
-    let batchWeight = batch.weight;
     let today = moment();
 
     async.each(consumptions, (consumption) => {
         if (moment(consumption.date) < today) {
-            if (batch.name === consumption.batch) {
-
+            if (batchName === consumption.batch) {
                 animalGroup = animalGroups.find((ag) => {
                     return ag.name === consumption.animalGroup;
                 });
-
-
-                amount = batchWeight -= (consumption.amount * animalGroup.amount);
+                amount += (consumption.amount * animalGroup.amount);
             }
         }
     });

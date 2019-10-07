@@ -17,8 +17,8 @@
           <%= errorMessage %>
         </div>
         <%}%>
-        <h2>Sparade batchar</h2>
         <% if(batches.length > 0) {%>
+        <h2>Sparade batchar</h2>
         <ul class="list-group">
           <% batches.forEach(function(b, i) { %>
           <li class="list-group-item">
@@ -26,11 +26,15 @@
             <br />
             Fodertyp: <%= b.fodderType %>
             <br />
+            <% if(b.unknownAmount === false) {%>
             Orginalmängd: <%= b.weight%> <%= b.unit%>
             <br />
-            Schemalagd mängd: <%= b.scheduledAmount %> <%= b.unit%>
-            <br />
             Förbrukad mängd: <%= b.consumedAmount %> <%= b.unit%>
+            <% } else {%>
+            Förbrukad mängd: <%= b.consumedAmount %> <%= b.unit%>
+            <%}%>
+            <br />
+            Schemalagd mängd: <%= b.scheduledAmount %> <%= b.unit%>
             <% if(b.refillable === true) {%>
             <form action="/batches/<%= b.name %>/<%= b.weight %>" method="post">
               <div class="form-group">
@@ -97,8 +101,17 @@
             </div>
           </div>
           <div class="form-group">
+            <label for="batchForm">Okänd mängd</label>
+            <div class="form-check">
+              <input type="radio" value="Ja" id="batchFormUnknownAmount" name="batchUnknownAmount" required>
+              <label class="form-check-label"> Ja</label>
+              <input type="radio" value="Nej" id="batchFormUnknownAmount" name="batchUnknownAmount" required>
+              <label class="form-check-label"> Nej</label>
+            </div>
+          </div>
+          <div class="form-group">
             <label for="batchForm">Mängd i vald enhet</label>
-            <input type="number" class="form-control" id="batchFormWeight" name="batchWeight" required>
+            <input type="number" class="form-control" id="batchFormWeight" name="batchWeight">
           </div>
           <div class="form-group">
             <label for="batchForm">Påfyllningsbar</label>
