@@ -6,10 +6,11 @@ const async = require('async');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
 app.use(helmet()); //It's best to use Helmet early in your middleware stack so that its headers are sure to be set
+const ejs = require('ejs')._express;
 
-const batches = require('./src/controllers/batchController');
-const consumptions = require('./src/controllers/consumptionController');
-const animalGroups = require('./src/controllers/animalGroupController');
+const batches = require('./controllers/batchController');
+const consumptions = require('./controllers/consumptionController');
+const animalGroups = require('./controllers/animalGroupController');
 
 require('dotenv').config();
 
@@ -34,6 +35,7 @@ const authCheck = (req, res, next) => {
 };
 
 app.set('view engine', 'ejs');
+app.engine('.ejs', ejs);
 app.use(session({secret: sessionSec, saveUninitialized: true,resave: true}));
 app.use(bodyParser.urlencoded({
     extended: false
